@@ -27,19 +27,19 @@ public class Collect implements Persistable<String> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String collectId;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "fileId")
     private GeneralFile generalFile;
     private String ipV4;
     private String ipV6;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "PROGRAM_ID", referencedColumnName = "STAT")
+    @JoinColumn(name = "STAT", referencedColumnName = "programId")
     private Program program;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "GPS_ID")
+    @JoinColumn(name = "gpsId")
     private GPS gps;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "FLOOR_ID")
+    @JoinColumn(name = "floorId")
     private Floor floor;
 
     @CreatedBy
