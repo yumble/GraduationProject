@@ -24,7 +24,7 @@ public class GeneralFile {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Comment("파일 ID")
-    private UUID fileId;
+    private String fileId;
 
     @Comment("원본 파일명")
     @Column(name = "ORIGIN_FILENAME")
