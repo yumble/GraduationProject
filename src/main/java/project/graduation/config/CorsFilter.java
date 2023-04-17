@@ -1,4 +1,4 @@
-package dorosee.initial.config;
+package project.graduation.config;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

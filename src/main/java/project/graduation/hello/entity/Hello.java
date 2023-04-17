@@ -1,4 +1,4 @@
-package dorosee.initial.hello.entity;
+package project.graduation.hello.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

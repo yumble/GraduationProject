@@ -1,4 +1,4 @@
-package dorosee.initial.config.basestatus;
+package project.graduation.config.basestatus;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

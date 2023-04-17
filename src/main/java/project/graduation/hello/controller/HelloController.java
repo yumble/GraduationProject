@@ -1,11 +1,11 @@
-package dorosee.initial.hello.controller;
+package project.graduation.hello.controller;
 
-import dorosee.initial.config.resultform.ResultException;
-import dorosee.initial.config.resultform.ResultResponse;
-import dorosee.initial.config.resultform.ResultResponseStatus;
-import dorosee.initial.hello.dto.HelloDto;
-import dorosee.initial.hello.entity.Hello;
-import dorosee.initial.hello.repository.HelloRepository;
+import project.graduation.config.resultform.ResultException;
+import project.graduation.config.resultform.ResultResponse;
+import project.graduation.config.resultform.ResultResponseStatus;
+import project.graduation.hello.dto.HelloDto;
+import project.graduation.hello.entity.Hello;
+import project.graduation.hello.repository.HelloRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
-package dorosee.initial.hello.dto;
+package project.graduation.hello.dto;
 
-import dorosee.initial.hello.entity.Hello;
+import project.graduation.hello.entity.Hello;
 import lombok.Getter;
 
 @Getter

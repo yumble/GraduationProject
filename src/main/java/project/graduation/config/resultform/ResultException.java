@@ -1,4 +1,4 @@
-package dorosee.initial.config.resultform;
+package project.graduation.config.resultform;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

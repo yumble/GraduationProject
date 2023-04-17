@@ -1,4 +1,4 @@
-package dorosee.initial.config;
+package project.graduation.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;

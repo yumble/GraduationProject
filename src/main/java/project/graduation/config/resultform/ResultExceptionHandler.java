@@ -1,4 +1,4 @@
-package dorosee.initial.config.resultform;
+package project.graduation.config.resultform;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.Map;
-
-import static dorosee.initial.config.resultform.ResultResponseStatus.*;
 
 @Slf4j
 @RestControllerAdvice
@@ -28,27 +26,27 @@ public class ResultExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     public ResultResponse<Map<String, Object>> loginErrorHandler(AuthenticationException e) {
         log.error("[exceptionHandle] ex", e);
-        return new ResultResponse<>(UNAUTHORIZED);
+        return new ResultResponse<>(ResultResponseStatus.UNAUTHORIZED);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResultResponse<Map<String, Object>> badRequestHandler(HttpMessageNotReadableException e) {
         log.error("[exceptionHandle] ex", e);
-        return new ResultResponse<>(REQUEST_ERROR);
+        return new ResultResponse<>(ResultResponseStatus.REQUEST_ERROR);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public ResultResponse<Map<String, Object>> allErrorHandler(Exception e) {
         log.error("[exceptionHandle] ex", e);
-        return new ResultResponse<>(SERVER_ERROR);
+        return new ResultResponse<>(ResultResponseStatus.SERVER_ERROR);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Throwable.class)
     public ResultResponse<Map<String, Object>> allThrowableErrorHandler(Throwable e) {
         log.error("[exceptionHandle] ex", e);
-        return new ResultResponse<>(SERVER_ERROR);
+        return new ResultResponse<>(ResultResponseStatus.SERVER_ERROR);
     }
 }

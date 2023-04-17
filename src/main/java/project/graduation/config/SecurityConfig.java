@@ -1,4 +1,4 @@
-package dorosee.initial.config;
+package project.graduation.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
