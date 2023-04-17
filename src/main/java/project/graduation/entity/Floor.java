@@ -28,7 +28,7 @@ public class Floor implements Persistable<String> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String floorId;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "ADDRESS_ID")
+    @JoinColumn(name = "addressId")
     private AddressInfo addressInfo;
     @NotNull
     private Integer floor;

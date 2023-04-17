@@ -28,7 +28,7 @@ public class Annotation implements Persistable<String> {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String annotationId;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "fileId")
     private GeneralFile generalFile;
     private String labelData;
     @CreatedBy

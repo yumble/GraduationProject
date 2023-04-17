@@ -30,13 +30,13 @@ public class Result implements Persistable<String> {
     private String fileList;
     private String relationData;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "FILE_ID")
+    @JoinColumn(name = "fileId")
     private GeneralFile generalFile;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "ANNOTATION_ID")
+    @JoinColumn(name = "annotationId")
     private Annotation annotation;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "FLOOR_ID")
+    @JoinColumn(name = "floorId")
     private Floor floor;
 
     @CreatedBy
