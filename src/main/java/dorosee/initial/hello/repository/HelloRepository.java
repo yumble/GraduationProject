@@ -1,6 +1,6 @@
-package dorosee.initial.test.repository;
+package dorosee.initial.hello.repository;
 
-import dorosee.initial.test.entity.Hello;
+import dorosee.initial.hello.entity.Hello;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface HelloRepository extends JpaRepository<Hello, Integer> {
