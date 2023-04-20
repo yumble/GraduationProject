@@ -8,7 +8,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
@@ -21,39 +20,37 @@ import java.util.UUID;
 @DynamicInsert
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "TB_ADDRESS_INFO2")
-public class AddressInfo {
-
+@Table(name = "TB_ADDRESS_INFO")
+public class Address {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ADDRESS_ID")
     private UUID addressId;
-    @NotNull
+    @Column(name = "API_ID")
+    private String apiId;
+    @Column(name = "PLACE_NAME")
+    private String placeName;
+    @Column(name = "CATEGORY_NAME")
+    private String categoryName;
+    @Column(name = "CATEGORY_GROUP_CODE")
+    private String categoryGroupCode;
+    @Column(name = "CATEGORY_GROUP_NAME")
+    private String categoryGroupName;
+    @Column(name = "PHONE")
+    private String phone;
     @Column(name = "ADDRESS_NAME")
     private String addressName;
-    @Column(name = "REGION_1DEPTH_NAME")
-    private String region1depth;
-    @Column(name = "REGION_2DEPTH_NAME")
-    private String region2depth;
-    @Column(name = "REGION_3DEPTH_NAME")
-    private String region3depth;
-    @Column(name = "ROAD_NAME")
-    private String roadName;
-    @Column(name = "UNDER_GROUND_YN")
-    private String underGroundYn;
-    @Column(name = "MAIN_BUILDING_NO")
-    private String mainBuildingNo;
-    @Column(name = "SUB_BUILDING_NO")
-    private String subBuildingNo;
-    @Column(name = "BUILDING_NAME")
-    private String buildingName;
-    @Column(name = "ZONE_NO")
-    private String zoneNo;
+    @Column(name = "ROAD_ADDRESS_NAME")
+    private String roadAddressName;
     @Column(name = "BUILDING_LATITUDE")
-    private BigDecimal buildingLatitude;
+    private String buildingLatitude;
     @Column(name = "BUILDING_LONGITUDE")
-    private BigDecimal buildingLongitude;
+    private String buildingLongitude;
+    @Column(name = "PLACE_URL")
+    private String placeUrl;
+    @Column(name = "DISTANCE")
+    private String distance;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
