@@ -32,13 +32,13 @@ public class Result {
     @Column(name = "RELATION_DATA")
     private String relationData;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "fileId")
+    @JoinColumn(name = "FILE_ID")
     private GeneralFile generalFile;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "annotationId")
+    @JoinColumn(name = "ANNOTATION_ID")
     private Annotation annotation;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "floorId")
+    @JoinColumn(name = "FLOOR_ID")
     private Floor floor;
 
     @CreatedDate

@@ -28,7 +28,7 @@ public class Floor {
     @Column(name = "FLOOR_ID")
     private UUID floorId;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "addressId")
+    @JoinColumn(name = "ADDRESS_ID")
     private AddressInfo addressInfo;
     @NotNull
     @Column(name = "FLOOR")
