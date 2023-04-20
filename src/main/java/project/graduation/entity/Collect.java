@@ -6,12 +6,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -20,16 +20,19 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_COLLECT_LOCATION")
-public class Collect implements Persistable<String> {
+public class Collect {
 
     @Id
     @NotNull
+    @Column(name = "COLLECT_ID")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String collectId;
+    private UUID collectId;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "fileId")
     private GeneralFile generalFile;
+    @Column(name = "IP_V4")
     private String ipV4;
+    @Column(name = "IP_V6")
     private String ipV6;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -42,21 +45,12 @@ public class Collect implements Persistable<String> {
     @JoinColumn(name = "floorId")
     private Floor floor;
 
-    @CreatedBy
+    @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
-
-    @Override
-    public String getId() {
-        return collectId;
-    }
-
-    @Override
-    public boolean isNew() {
-        return createdDate == null;
-    }
 
 }
