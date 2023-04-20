@@ -28,7 +28,7 @@ public class Collect {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID collectId;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "fileId")
+    @JoinColumn(name = "FILE_ID")
     private GeneralFile generalFile;
     @Column(name = "IP_V4")
     private String ipV4;
@@ -36,13 +36,13 @@ public class Collect {
     private String ipV6;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "STAT", referencedColumnName = "programId")
+    @JoinColumn(name = "STAT", referencedColumnName = "PROGRAM_ID")
     private Program program;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "gpsId")
+    @JoinColumn(name = "GPS_ID")
     private GPS gps;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "floorId")
+    @JoinColumn(name = "FLOOR_ID")
     private Floor floor;
 
     @CreatedDate

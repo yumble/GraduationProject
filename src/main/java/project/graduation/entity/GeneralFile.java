@@ -59,7 +59,4 @@ public class GeneralFile {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
-    public void modifySavedFileName(String savedFileName){
-        this.savedFileName = savedFileName;
-    }
 }
