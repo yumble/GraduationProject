@@ -6,13 +6,14 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,13 +22,15 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_ADDRESS_INFO")
-public class AddressInfo implements Persistable<String> {
+public class AddressInfo {
 
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String addressId;
+    @Column(name = "ADDRESS_ID")
+    private UUID addressId;
     @NotNull
+    @Column(name = "ADDRESS_NAME")
     private String addressName;
     @Column(name = "REGION_1DEPTH_NAME")
     private String region1depth;
@@ -35,29 +38,27 @@ public class AddressInfo implements Persistable<String> {
     private String region2depth;
     @Column(name = "REGION_3DEPTH_NAME")
     private String region3depth;
+    @Column(name = "ROAD_NAME")
     private String roadName;
+    @Column(name = "UNDER_GROUND_YN")
     private String underGroundYn;
+    @Column(name = "MAIN_BUILDING_NO")
     private String mainBuildingNo;
+    @Column(name = "SUB_BUILDING_NO")
     private String subBuildingNo;
+    @Column(name = "BUILDING_NAME")
     private String buildingName;
+    @Column(name = "ZONE_NO")
     private String zoneNo;
+    @Column(name = "BUILDING_LATITUDE")
     private BigDecimal buildingLatitude;
+    @Column(name = "BUILDING_LONGITUDE")
     private BigDecimal buildingLongitude;
-    @CreatedBy
+    @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
-
-    @Override
-    public String getId() {
-        return addressId;
-    }
-
-    @Override
-    public boolean isNew() {
-        return createdDate == null;
-    }
 
 }

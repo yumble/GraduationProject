@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import lombok.*;
 import org.hibernate.annotations.*;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,6 +14,8 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @DynamicInsert
 @DynamicUpdate
@@ -22,9 +24,9 @@ import java.util.UUID;
 public class GeneralFile {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "FILE_ID")
     @Comment("파일 ID")
-    private String fileId;
+    private UUID fileId;
 
     @Comment("원본 파일명")
     @Column(name = "ORIGIN_FILENAME")
@@ -34,6 +36,7 @@ public class GeneralFile {
     @Column(name = "SAVED_FILENAME")
     private String savedFileName;
 
+    @Column(name = "CONTENT_TYPE")
     @Comment("Content-Type")
     private String contentType;
 
@@ -48,10 +51,15 @@ public class GeneralFile {
     @Column(name = "UPLOAD_DIR")
     private String uploadDir;
 
-    @CreatedBy
+    @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
+
+    public void modifySavedFileName(String savedFileName){
+        this.savedFileName = savedFileName;
+    }
 }

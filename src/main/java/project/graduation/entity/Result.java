@@ -6,13 +6,12 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,13 +20,16 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_RESULT_FILE_INFO")
-public class Result implements Persistable<String> {
+public class Result {
 
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String resultId;
+    @Column(name = "RESULT_ID")
+    private UUID resultId;
+    @Column(name = "FILE_LIST")
     private String fileList;
+    @Column(name = "RELATION_DATA")
     private String relationData;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "fileId")
@@ -39,21 +41,12 @@ public class Result implements Persistable<String> {
     @JoinColumn(name = "floorId")
     private Floor floor;
 
-    @CreatedBy
+    @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
-
-    @Override
-    public String getId() {
-        return resultId;
-    }
-
-    @Override
-    public boolean isNew() {
-        return createdDate == null;
-    }
 
 }

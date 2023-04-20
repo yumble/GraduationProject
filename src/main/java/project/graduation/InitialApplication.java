@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @Slf4j
 @ServletComponentScan
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@SpringBootApplication
 @EnableJpaAuditing
 public class InitialApplication extends SpringBootServletInitializer {
 

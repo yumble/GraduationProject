@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -21,33 +21,27 @@ import java.time.LocalDateTime;
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_GPS_INFO")
-public class GPS implements Persistable<String> {
+public class GPS {
 
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String gpsId;
+    @Column(name = "GPS_ID")
+    private UUID gpsId;
     @NotNull
+    @Column(name = "LATITUDE")
     private BigDecimal latitude;
     @NotNull
+    @Column(name = "LONGITUDE")
     private BigDecimal longitude;
-
+    @Column(name = "ALTITUDE")
     private BigDecimal altitude;
-    @CreatedBy
+    @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
 
     @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
-
-    @Override
-    public String getId() {
-        return gpsId;
-    }
-
-    @Override
-    public boolean isNew() {
-        return createdDate == null;
-    }
 
 }
