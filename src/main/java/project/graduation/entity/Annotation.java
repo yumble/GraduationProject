@@ -28,7 +28,7 @@ public class Annotation {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID annotationId;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
-    @JoinColumn(name = "fileId")
+    @JoinColumn(name = "FILE_ID")
     private GeneralFile generalFile;
     @Column(name = "LABEL_DATA")
     private String labelData;
