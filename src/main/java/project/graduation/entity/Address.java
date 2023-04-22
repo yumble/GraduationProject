@@ -22,6 +22,7 @@ import java.util.UUID;
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "TB_ADDRESS_INFO")
 public class Address {
+    //
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
