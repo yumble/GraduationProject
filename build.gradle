@@ -40,6 +40,7 @@ dependencies {
 
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8' //쿼리파라미터 바인딩
 	implementation 'commons-fileupload:commons-fileupload:1.4' //file upload
+	implementation 'org.springframework.boot:spring-boot-starter-validation' //validation
 }
 
 tasks.named('test') {
