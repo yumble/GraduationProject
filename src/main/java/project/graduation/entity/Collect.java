@@ -1,6 +1,7 @@
 package project.graduation.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -53,4 +54,14 @@ public class Collect {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    @Builder
+
+    public Collect(GeneralFile generalFile, GPS gps, Floor floor) {
+        this.generalFile = generalFile;
+        this.gps = gps;
+        this.floor = floor;
+        //this.ipV4 = ipV4;
+        //this.ipV6 = ipV6;
+        //this.program = program;
+    }
 }

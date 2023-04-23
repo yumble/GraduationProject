@@ -51,9 +51,9 @@ public class AddressInfo {
     @Column(name = "ZONE_NO")
     private String zoneNo;
     @Column(name = "BUILDING_LATITUDE")
-    private BigDecimal buildingLatitude;
+    private String buildingLatitude;
     @Column(name = "BUILDING_LONGITUDE")
-    private BigDecimal buildingLongitude;
+    private String buildingLongitude;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;

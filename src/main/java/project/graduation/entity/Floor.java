@@ -1,6 +1,7 @@
 package project.graduation.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -29,7 +30,7 @@ public class Floor {
     private UUID floorId;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "ADDRESS_ID")
-    private AddressInfo addressInfo;
+    private Address address;
     @NotNull
     @Column(name = "FLOOR")
     private Integer floor;
@@ -41,4 +42,10 @@ public class Floor {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    @Builder
+
+    public Floor(Address address, Integer floor) {
+        this.address = address;
+        this.floor = floor;
+    }
 }

@@ -11,6 +11,7 @@ import project.graduation.config.resultform.ResultResponse;
 import project.graduation.dto.AddressDto;
 import project.graduation.dto.GPSDto;
 import project.graduation.entity.GeneralFile;
+import project.graduation.service.CollectService;
 import project.graduation.service.GeneralFileService;
 
 import static project.graduation.config.resultform.ResultResponseStatus.REQUEST_ERROR;
@@ -33,6 +34,6 @@ public class CollectController {
 
         collectService.saveFile(address, location, file);
 
-        return new ResultResponse<>(generalFile, null);
+        return new ResultResponse<>(null, null);
     }
-}ㅡ
+}

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import project.graduation.dto.AddressDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -25,11 +26,8 @@ public class Address {
     //
     @Id
     @NotNull
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "ADDRESS_ID")
-    private UUID addressId;
-    @Column(name = "API_ID")
-    private String apiId;
+    private String addressId;
     @Column(name = "PLACE_NAME")
     private String placeName;
     @Column(name = "CATEGORY_NAME")
@@ -60,4 +58,18 @@ public class Address {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    public Address(AddressDto addressDto) {
+        this.addressId = addressDto.getId();
+        this.placeName = addressDto.getPlace_name();
+        this.categoryName = addressDto.getCategory_name();
+        this.categoryGroupCode = addressDto.getCategory_group_code();
+        this.categoryGroupName = addressDto.getCategory_group_name();
+        this.phone = addressDto.getPhone();
+        this.addressName = addressDto.getAddress_name();
+        this.roadAddressName = addressDto.getRoad_address_name();
+        this.buildingLatitude = addressDto.getX();
+        this.buildingLongitude = addressDto.getY();
+        this.placeUrl = addressDto.getPlace_url();
+        this.distance = addressDto.getDistance();
+    }
 }
