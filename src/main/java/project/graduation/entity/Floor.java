@@ -43,7 +43,6 @@ public class Floor {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-
     public Floor(Address address, Integer floor) {
         this.address = address;
         this.floor = floor;
