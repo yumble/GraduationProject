@@ -95,9 +95,7 @@ public class GeneralFileService {
             FileUtils.deleteQuietly(savedFile);
             throw new ResultException(NOT_FOUND);
         }
-        generalFileRepository.save(generalFile);
-
-        return generalFile;
+        return generalFileRepository.save(generalFile);
     }
     public void deleteFile(UUID fileId) throws IOException {
 

@@ -1,19 +1,28 @@
 package project.graduation.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class AddressDto {
     private String id; //apiId;
-    private String placeName;
-    private String categoryName;
-    private String categoryGroupCode;
-    private String categoryGroupName;
+    @NotNull @NotBlank
+    private String place_name;
+    private String category_name;
+    private String category_group_code;
+    private String category_group_name;
     private String phone;
-    private String addressName;
-    private String roadAddressName;
+    @NotNull @NotBlank
+    private String address_name;
+    @NotNull @NotBlank
+    private String road_address_name;
+    @NotNull @NotBlank
     private String x; //buildingLatitude;
+    @NotNull @NotBlank
     private String y; //buildingLongitude;
-    private String placeUrl;
+    @NotNull @NotBlank
+    private String place_url;
     private String distance;
+
 }

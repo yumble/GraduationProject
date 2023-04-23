@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import project.graduation.dto.GPSDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,12 +31,12 @@ public class GPS {
     private UUID gpsId;
     @NotNull
     @Column(name = "LATITUDE")
-    private BigDecimal latitude;
+    private String latitude;
     @NotNull
     @Column(name = "LONGITUDE")
-    private BigDecimal longitude;
+    private String longitude;
     @Column(name = "ALTITUDE")
-    private BigDecimal altitude;
+    private String altitude;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
@@ -44,4 +45,12 @@ public class GPS {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    public GPS(GPSDto location) {
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+        this.altitude = location.getAltitude();
+//        this.latitude = BigDecimal.valueOf(Long.parseLong(location.getLatitude()));
+//        this.longitude = BigDecimal.valueOf(Long.parseLong(location.getLongitude()));
+//        this.altitude = BigDecimal.valueOf(Long.parseLong(location.getAltitude()));
+    }
 }
