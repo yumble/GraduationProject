@@ -22,7 +22,7 @@ public class FloorService {
     private final FloorRepository floorRepository;
 
     @Transactional
-    public Floor saveFloor(AddressDto addressDto, Integer buildingFloor) {
+    public Floor saveFloor(AddressDto addressDto, String buildingFloor) {
         return floorRepository.findByAddress(addressDto.getId(), buildingFloor)
                 .orElseGet(() -> {
                     Optional<Address> optionalAddress = addressRepository.findByAddressId(addressDto.getId());

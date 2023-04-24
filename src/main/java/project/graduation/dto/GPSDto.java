@@ -13,6 +13,6 @@ public class GPSDto {
     private String longitude;
     private String altitude;
     @NotNull
-    private Integer floor;
+    private String floor;
 
 }

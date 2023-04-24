@@ -10,5 +10,5 @@ import java.util.UUID;
 
 public interface FloorRepository extends JpaRepository<Floor, UUID> {
     @Query(value = "SELECT f FROM Floor f WHERE f.address.addressId = :addressId and f.floor = :floor")
-    Optional<Floor> findByAddress(String addressId, Integer floor);
+    Optional<Floor> findByAddress(String addressId, String floor);
 }

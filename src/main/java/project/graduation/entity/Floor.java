@@ -33,7 +33,7 @@ public class Floor {
     private Address address;
     @NotNull
     @Column(name = "FLOOR")
-    private Integer floor;
+    private String floor;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
@@ -43,7 +43,7 @@ public class Floor {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Floor(Address address, Integer floor) {
+    public Floor(Address address, String floor) {
         this.address = address;
         this.floor = floor;
     }
