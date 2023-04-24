@@ -18,14 +18,14 @@ import project.graduation.service.GeneralFileService;
 import static project.graduation.config.resultform.ResultResponseStatus.REQUEST_ERROR;
 
 @Slf4j
-@RequestMapping("/lidar")
+@RequestMapping("/lidars")
 @RestController
 @RequiredArgsConstructor
 public class CollectController {
     private final CollectService collectService;
 
     @PostMapping
-    public ResultResponse<CollectDto> saveFile(@RequestPart @Valid AddressDto address,
+    public ResultResponse<CollectDto> uploadLidarFile(@RequestPart @Valid AddressDto address,
                                                @RequestPart @Valid GPSDto location,
                                                @RequestPart MultipartFile file,
                                                BindingResult br) {
@@ -33,6 +33,6 @@ public class CollectController {
             throw new ResultException(REQUEST_ERROR);
         }
 
-        return new ResultResponse<>(collectService.saveFile(address, location, file), null);
+        return new ResultResponse<>(collectService.uploadLidarFile(address, location, file), null);
     }
 }

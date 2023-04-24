@@ -23,7 +23,7 @@ public class CollectService {
     private final FloorService floorService;
 
     @Transactional
-    public CollectDto saveFile(AddressDto addressDto, GPSDto location, MultipartFile file) {
+    public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, MultipartFile file) {
 
         GeneralFile savedFile = generalFileService.saveFile("ply", file);
 

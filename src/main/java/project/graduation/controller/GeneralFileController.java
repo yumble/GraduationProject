@@ -21,22 +21,22 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@RequestMapping("/v1/api/file")
+@RequestMapping("/files")
 @RestController
 @RequiredArgsConstructor
 public class GeneralFileController {
 
     private final GeneralFileService generalFileService;
 
-    @GetMapping("/downloads/{fileId}")
-    public void downloadWrkFile(HttpServletResponse res,
+    @GetMapping("/download/{fileId}")
+    public void downloadFile(HttpServletResponse res,
                                 @PathVariable(value = "fileId") String fileId) throws IOException {
 
         UUID fileUUID = UUID.fromString(fileId);
-        GeneralFile fileInfo = generalFileService.getFileById(fileUUID);
-        Path targetPath = Paths.get("/storage/ply", fileInfo.getUploadDir(), fileInfo.getSavedFileName());
+        GeneralFile fileInfo = generalFileService.getGeneralFileByFileId(fileUUID);
 
-        File file = targetPath.toFile();
+
+        File file = generalFileService.getFile(fileInfo);
 
         res.setContentType(fileInfo.getContentType());
         res.setContentLength((int) file.length());
@@ -48,11 +48,5 @@ public class GeneralFileController {
         FileCopyUtils.copy(fis, os);
         fis.close();
         os.close();
-    }
-    @PostMapping
-    public ResultResponse<GeneralFile> saveFile(HttpServletRequest req,
-                                                 MultipartFile file) throws IOException {
-        GeneralFile generalFile = generalFileService.saveFile("./storage/ply", file);
-        return new ResultResponse<>(generalFile,null);
     }
 }

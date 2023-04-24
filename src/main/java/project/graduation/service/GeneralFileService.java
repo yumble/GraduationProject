@@ -39,29 +39,26 @@ public class GeneralFileService {
         STORAGE_ROOT_DIR = env.getProperty("storage.directory.ply");
     }
 
-    public GeneralFile getFileById(UUID fileId) {
+    public GeneralFile getGeneralFileByFileId(UUID fileId) {
         return generalFileRepository.findById(fileId).orElse(null);
     }
 
-    public Path getFilepathByFileId(UUID fileId) {
-        Optional<GeneralFile> optionalGeneralFile = generalFileRepository.findById(fileId);
-        GeneralFile file = optionalGeneralFile.orElse(null);
+    public File getFile(GeneralFile generalFile) {
 
-        if (file == null) {
+        if (generalFile == null) {
             throw new ResultException(NOT_FOUND);
         }
 
-        String filename = file.getSavedFileName();
-        String uploadDir = file.getUploadDir();
+        Path targetPath = Paths.get(STORAGE_ROOT_DIR, generalFile.getUploadDir(), generalFile.getSavedFileName());
 
-        Path targetFilepath = Paths.get(STORAGE_ROOT_DIR, uploadDir, filename);
-        File targetFile = targetFilepath.toFile();
+        File targetFile = targetPath.toFile();
+
         if (!targetFile.exists()) {
             log.error("method::getFilepathByFileId, Storage, FILE_NOT_FOUND, targetFile: {}", targetFile.getAbsoluteFile());
             throw new ResultException(NOT_FOUND);
         }
 
-        return targetFilepath;
+        return targetFile;
     }
 
     @Transactional
@@ -97,13 +94,13 @@ public class GeneralFileService {
         }
         return generalFileRepository.save(generalFile);
     }
-    public void deleteFile(UUID fileId) throws IOException {
-
-        Path filePath = getFilepathByFileId(fileId);
-
-        File file = new File(filePath.toString());
-        if (file.exists()) {
-            Files.delete(filePath);
-        }
-    }
+//    public void deleteFile(UUID fileId) throws IOException {
+//
+//        Path filePath = getFilepathByFileId(fileId);
+//
+//        File file = new File(filePath.toString());
+//        if (file.exists()) {
+//            Files.delete(filePath);
+//        }
+//    }
 }
