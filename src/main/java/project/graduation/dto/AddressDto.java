@@ -3,13 +3,11 @@ package project.graduation.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import project.graduation.entity.Address;
-import project.graduation.entity.Floor;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
+@NoArgsConstructor
 public class AddressDto {
     private String id; //apiId;
     @NotNull @NotBlank
