@@ -3,6 +3,7 @@ package project.graduation.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import project.graduation.entity.Address;
 
 @Data
 public class AddressDto {
@@ -25,4 +26,18 @@ public class AddressDto {
     private String place_url;
     private String distance;
 
+    public AddressDto(Address address) {
+        this.id = address.getAddressId();
+        this.place_name = address.getPlaceName();
+        this.category_name = address.getCategoryName();
+        this.category_group_code = address.getCategoryGroupCode();
+        this.category_group_name = address.getCategoryGroupName();
+        this.phone = address.getPhone();
+        this.address_name = address.getAddressName();
+        this.road_address_name = address.getRoadAddressName();
+        this.x = address.getBuildingLatitude();
+        this.y = address.getBuildingLongitude();
+        this.place_url = address.getPlaceUrl();
+        this.distance = address.getDistance();
+    }
 }
