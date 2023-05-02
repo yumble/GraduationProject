@@ -39,5 +39,5 @@ public class AddressDto {
         this.y = address.getBuildingLongitude();
         this.place_url = address.getPlaceUrl();
         this.distance = address.getDistance();
-    }
+    }//
 }
