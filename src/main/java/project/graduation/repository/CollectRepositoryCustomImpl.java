@@ -5,7 +5,8 @@ import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import project.graduation.dto.CollectResponseDto;
+import project.graduation.dto.CollectDetailDto;
+import project.graduation.dto.CollectListDto;
 import project.graduation.entity.Collect;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
     @Override
-    public Page<CollectResponseDto> findAllByAddressId(String addressId, Pageable pageable){
+    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable){
         List<Collect> content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -56,10 +57,10 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .where(floor1.address.addressId.eq(addressId))
                 .fetch().size();
 
-        return new PageImpl<>(content.stream().map(CollectResponseDto::new).collect(Collectors.toList()), pageable, total);
+        return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
     }
     @Override
-    public CollectResponseDto findByCollectId(UUID collectId){
+    public CollectDetailDto findByCollectId(UUID collectId){
         Collect content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -76,6 +77,6 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .where(collect.collectId.eq(collectId))
                 .fetchOne();
 
-        return new CollectResponseDto(content);
+        return new CollectDetailDto(content);
     }
 }

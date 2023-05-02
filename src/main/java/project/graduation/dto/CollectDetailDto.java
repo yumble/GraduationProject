@@ -1,16 +1,18 @@
 package project.graduation.dto;
 
 import lombok.Data;
-import project.graduation.entity.*;
+import project.graduation.entity.Collect;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class CollectResponseDto {
+public class CollectDetailDto {
 
     private String collectId;
     private String generalFileId;
+    private String originFileName;
+    private Long totalPoints;
     private Long fileSize;
     private String programId;
     private String gpsId;
@@ -25,11 +27,12 @@ public class CollectResponseDto {
     private String createdDate;
     private String lastModifiedDate;
 
-    public CollectResponseDto(Collect collect) {
+    public CollectDetailDto(Collect collect) {
         this.collectId = String.valueOf(collect.getCollectId());
 
         this.generalFileId = String.valueOf(collect.getGeneralFile().getFileId());
         this.fileSize = collect.getGeneralFile().getSize();
+        this.originFileName = collect.getGeneralFile().getOriginFileName();
 
         if(collect.getProgram() != null)
             this.programId = String.valueOf(collect.getProgram().getProgramId());
