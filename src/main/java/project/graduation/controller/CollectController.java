@@ -19,6 +19,7 @@ import project.graduation.service.GeneralFileService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static project.graduation.config.resultform.ResultResponseStatus.REQUEST_ERROR;
 
@@ -31,9 +32,9 @@ public class CollectController {
 
     @PostMapping
     public ResultResponse<CollectDto> uploadLidarFile(@RequestPart @Valid AddressDto address,
-                                               @RequestPart @Valid GPSDto location,
-                                               @RequestPart MultipartFile file,
-                                               BindingResult br) {
+                                                      @RequestPart @Valid GPSDto location,
+                                                      @RequestPart MultipartFile file,
+                                                      BindingResult br) {
         if (br.hasErrors() || file.isEmpty()) {
             throw new ResultException(REQUEST_ERROR);
         }
@@ -50,5 +51,10 @@ public class CollectController {
                 Map.of("totalCount", collectList.getTotalElements(),
                         "totalPage", collectList.getTotalPages()
                 ));
+    }
+
+    @GetMapping("/{collectId}/detail")
+    public ResultResponse<CollectResponseDto> getLidarFile(@PathVariable UUID collectId) {
+        return new ResultResponse<>(collectService.getLidarFile(collectId), null);
     }
 }

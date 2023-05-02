@@ -17,6 +17,7 @@ import project.graduation.entity.*;
 import project.graduation.repository.CollectRepository;
 
 import java.util.List;
+import java.util.UUID;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -51,5 +52,8 @@ public class CollectService {
     public Page<CollectResponseDto> getLidarFiles(String addressId, Integer page, Integer size){
         PageRequest pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         return collectRepository.findAllByAddressId(addressId, pageable);
+    }
+    public CollectResponseDto getLidarFile(UUID collectId){
+        return collectRepository.findByCollectId(collectId);
     }
 }

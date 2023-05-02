@@ -7,10 +7,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import project.graduation.dto.CollectResponseDto;
 import project.graduation.entity.Collect;
-import project.graduation.entity.QGPS;
-import project.graduation.entity.QGeneralFile;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static project.graduation.entity.QAddress.address;
@@ -51,5 +50,25 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetch().size();
 
         return new PageImpl<>(content.stream().map(CollectResponseDto::new).collect(Collectors.toList()), pageable, total);
+    }
+    @Override
+    public CollectResponseDto findByCollectId(UUID collectId){
+        Collect content = queryFactory
+                .select(collect)
+                .from(collect)
+                .join(collect.generalFile, generalFile)
+                .fetchJoin()
+                .join(collect.gps, gPS)
+                .fetchJoin()
+                .leftJoin(collect.program, program)
+                .fetchJoin()
+                .join(collect.floor, floor1)
+                .fetchJoin()
+                .join(collect.floor.address, address)
+                .fetchJoin()
+                .where(collect.collectId.eq(collectId))
+                .fetchOne();
+
+        return new CollectResponseDto(content);
     }
 }
