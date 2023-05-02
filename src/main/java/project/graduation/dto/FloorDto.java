@@ -29,7 +29,7 @@ public class FloorDto {
     @NotNull @NotBlank
     private String place_url;
     private String distance;
-    private List<String> floors;
+    private List<Integer> floors;
 
     public FloorDto(Address address) {
         this.id = address.getAddressId();
@@ -46,7 +46,7 @@ public class FloorDto {
         this.distance = address.getDistance();
         this.floors = orderByFloor(address.getFloors());
     }
-    public List<String> orderByFloor(List<Floor> floors){
+    public List<Integer> orderByFloor(List<Floor> floors){
         return floors.stream().map(Floor::getFloor).sorted().collect(Collectors.toList());
     }
 }
