@@ -7,6 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import project.graduation.config.resultform.ResultResponse;
 import project.graduation.dto.AddressDto;
+import project.graduation.dto.FloorDto;
+import project.graduation.entity.Address;
 import project.graduation.service.AddressService;
 
 import java.util.List;
@@ -17,7 +19,6 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class AddressController {
-
     private final AddressService addressService;
 
     @GetMapping
@@ -28,6 +29,10 @@ public class AddressController {
                 Map.of("totalCount", buildingList.getTotalElements(),
                         "totalPage", buildingList.getTotalPages()
         ));
+    }
+    @GetMapping("/{addressId}")
+    public ResultResponse<FloorDto> getBuildingDetail(@PathVariable(value = "addressId") String addressId) {
+        return new ResultResponse<>( addressService.getBuildingInfo(addressId), null);
     }
 
 }
