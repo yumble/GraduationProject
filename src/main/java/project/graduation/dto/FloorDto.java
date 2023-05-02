@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
-public class AddressDto {
+public class FloorDto {
     private String id; //apiId;
     @NotNull @NotBlank
     private String place_name;
@@ -29,8 +29,9 @@ public class AddressDto {
     @NotNull @NotBlank
     private String place_url;
     private String distance;
+    private List<Integer> floors;
 
-    public AddressDto(Address address) {
+    public FloorDto(Address address) {
         this.id = address.getAddressId();
         this.place_name = address.getPlaceName();
         this.category_name = address.getCategoryName();
@@ -43,5 +44,9 @@ public class AddressDto {
         this.y = address.getBuildingLongitude();
         this.place_url = address.getPlaceUrl();
         this.distance = address.getDistance();
+        this.floors = orderByFloor(address.getFloors());
+    }
+    public List<Integer> orderByFloor(List<Floor> floors){
+        return floors.stream().map(Floor::getFloor).sorted().collect(Collectors.toList());
     }
 }

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.graduation.dto.AddressDto;
+import project.graduation.dto.FloorDto;
+import project.graduation.entity.Address;
 import project.graduation.repository.AddressRepository;
 
 @Transactional(readOnly = true)
@@ -24,4 +26,8 @@ public class AddressService {
                 .map(AddressDto::new);
     }
 
+    public FloorDto getBuildingInfo(String addressId) {
+        Address address = addressRepository.findByBuilding(addressId);
+        return new FloorDto(address);
+    }
 }

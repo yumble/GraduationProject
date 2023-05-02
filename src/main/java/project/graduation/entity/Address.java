@@ -13,6 +13,8 @@ import project.graduation.dto.AddressDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -57,6 +59,9 @@ public class Address {
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
+
+    @OneToMany(mappedBy = "address")
+    private List<Floor> floors = new ArrayList<>();
 
     public Address(AddressDto addressDto) {
         this.addressId = addressDto.getId();
