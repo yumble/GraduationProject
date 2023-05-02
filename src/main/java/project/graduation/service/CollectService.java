@@ -9,14 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import project.graduation.dto.AddressDto;
-import project.graduation.dto.CollectDto;
-import project.graduation.dto.CollectResponseDto;
-import project.graduation.dto.GPSDto;
+import project.graduation.dto.*;
 import project.graduation.entity.*;
 import project.graduation.repository.CollectRepository;
 
-import java.util.List;
+import java.util.UUID;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -48,8 +45,11 @@ public class CollectService {
         return new CollectDto(collect);
     }
 
-    public Page<CollectResponseDto> getLidarFiles(String addressId, Integer page, Integer size){
+    public Page<CollectListDto> getLidarFiles(String addressId, Integer page, Integer size){
         PageRequest pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         return collectRepository.findAllByAddressId(addressId, pageable);
+    }
+    public CollectDetailDto getLidarFile(UUID collectId){
+        return collectRepository.findByCollectId(collectId);
     }
 }

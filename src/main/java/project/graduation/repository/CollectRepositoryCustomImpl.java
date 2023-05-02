@@ -5,12 +5,12 @@ import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import project.graduation.dto.CollectResponseDto;
+import project.graduation.dto.CollectDetailDto;
+import project.graduation.dto.CollectListDto;
 import project.graduation.entity.Collect;
-import project.graduation.entity.QGPS;
-import project.graduation.entity.QGeneralFile;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static project.graduation.entity.QAddress.address;
@@ -27,14 +27,19 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
         this.queryFactory = new JPAQueryFactory(em);
     }
     @Override
-    public Page<CollectResponseDto> findAllByAddressId(String addressId, Pageable pageable){
+    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable){
         List<Collect> content = queryFactory
                 .select(collect)
                 .from(collect)
                 .join(collect.generalFile, generalFile)
+                .fetchJoin()
                 .join(collect.gps, gPS)
+                .fetchJoin()
                 .leftJoin(collect.program, program)
+                .fetchJoin()
                 .join(collect.floor, floor1)
+                .fetchJoin()
+                .join(collect.floor.address, address)
                 .fetchJoin()
                 .where(floor1.address.addressId.eq(addressId))
                 .orderBy(collect.createdDate.desc())
@@ -47,9 +52,31 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .from(collect)
                 .join(collect.floor, floor1)
                 .fetchJoin()
+                .join(collect.floor.address, address)
+                .fetchJoin()
                 .where(floor1.address.addressId.eq(addressId))
                 .fetch().size();
 
-        return new PageImpl<>(content.stream().map(CollectResponseDto::new).collect(Collectors.toList()), pageable, total);
+        return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
+    }
+    @Override
+    public CollectDetailDto findByCollectId(UUID collectId){
+        Collect content = queryFactory
+                .select(collect)
+                .from(collect)
+                .join(collect.generalFile, generalFile)
+                .fetchJoin()
+                .join(collect.gps, gPS)
+                .fetchJoin()
+                .leftJoin(collect.program, program)
+                .fetchJoin()
+                .join(collect.floor, floor1)
+                .fetchJoin()
+                .join(collect.floor.address, address)
+                .fetchJoin()
+                .where(collect.collectId.eq(collectId))
+                .fetchOne();
+
+        return new CollectDetailDto(content);
     }
 }
