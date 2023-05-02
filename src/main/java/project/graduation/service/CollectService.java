@@ -3,14 +3,20 @@ package project.graduation.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.graduation.dto.AddressDto;
 import project.graduation.dto.CollectDto;
+import project.graduation.dto.CollectResponseDto;
 import project.graduation.dto.GPSDto;
 import project.graduation.entity.*;
 import project.graduation.repository.CollectRepository;
+
+import java.util.List;
 
 @Transactional(readOnly = true)
 @Slf4j
@@ -40,5 +46,10 @@ public class CollectService {
         collect = collectRepository.save(collect);
 
         return new CollectDto(collect);
+    }
+
+    public Page<CollectResponseDto> getLidarFiles(String addressId, Integer page, Integer size){
+        PageRequest pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDate"));
+        return collectRepository.findAllByAddressId(addressId, pageable);
     }
 }
