@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,8 +18,8 @@ import project.graduation.repository.AddressRepository;
 public class AddressService {
     private final AddressRepository addressRepository;
 
-    public Page<AddressDto> getBuildings() {
-        PageRequest pageable = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC, "createdDate"));
+    public Page<AddressDto> getBuildingsInfo(Integer page, Integer size) {
+        PageRequest pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDate"));
         return addressRepository.findAll(pageable)
                 .map(AddressDto::new);
     }
