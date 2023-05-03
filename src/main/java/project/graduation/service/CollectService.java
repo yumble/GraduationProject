@@ -28,7 +28,7 @@ public class CollectService {
     @Transactional
     public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, MultipartFile file) {
 
-        GeneralFile savedFile = generalFileService.saveFile("ply", file);
+        GeneralFile savedFile = generalFileService.saveFile("lidar", file);
 
         Floor floor = floorService.saveFloor(addressDto, location.getFloor());
 

@@ -36,7 +36,7 @@ public class GeneralFileService {
                               Environment env) {
         this.generalFileRepository = generalFileRepository;
         this.env = env;
-        STORAGE_ROOT_DIR = env.getProperty("storage.directory.ply");
+        STORAGE_ROOT_DIR = env.getProperty("storage.directory.server");
     }
 
     public GeneralFile getGeneralFileByFileId(UUID fileId) {
