@@ -29,12 +29,14 @@ public class GeneralFileService {
     private final GeneralFileRepository generalFileRepository;
     private final Environment env;
     private String STORAGE_ROOT_DIR;
+    private String DOWNLOAD_DIR;
 
     public GeneralFileService(GeneralFileRepository generalFileRepository,
                               Environment env) {
         this.generalFileRepository = generalFileRepository;
         this.env = env;
         STORAGE_ROOT_DIR = env.getProperty("storage.directory.server");
+        DOWNLOAD_DIR = env.getProperty("storage.directory.result");
     }
 
     public GeneralFile getGeneralFileByFileId(UUID fileId) {
@@ -47,7 +49,7 @@ public class GeneralFileService {
             throw new ResultException(NOT_FOUND);
         }
 
-        Path targetPath = Paths.get(STORAGE_ROOT_DIR, generalFile.getUploadDir(), generalFile.getSavedFileName());
+        Path targetPath = Paths.get(STORAGE_ROOT_DIR, DOWNLOAD_DIR, generalFile.getSavedFileName());
 
         File targetFile = targetPath.toFile();
 
