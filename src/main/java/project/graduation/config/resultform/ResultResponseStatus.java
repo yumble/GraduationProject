@@ -41,6 +41,7 @@ public enum ResultResponseStatus {
      * 5xx
      */
     DATABASE_ERROR(false, 500, "데이터베이스 연결에 실패하였습니다."),
+    UPLOAD_ERROR(false, 500, "업로드에 실패하였습니다."),
     SERVER_ERROR(false, 500, "서버와의 연결에 실패하였습니다.");
 
     private final boolean isSuccess;

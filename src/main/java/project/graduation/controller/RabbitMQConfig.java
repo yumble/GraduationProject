@@ -11,36 +11,32 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Configuration
 public class RabbitMQConfig {
 
-    private static final String EXCHANGE_NAME = "typers.filter";
-    private static final String PLY2PCD_QUEUE_NAME = "typers.filter.ply2pcd";
-    private static final String PCDOUTLIER_QUEUE_NAME = "typers.filter.outlier";
+    public static final String EXCHANGE_NAME = "typers.filter";
+    public static final String QUEUE_NAME = "typers-filter-queue";
+    public static final String KEY_PLY2PCD = "ply2pcd";
+    public static final String KEY_INLIER = "inlier";
 
     @Bean
     TopicExchange exchange() {
         return new TopicExchange(EXCHANGE_NAME);
     }
-
     @Bean
-    Queue ply2pcdQueue() {
-        return new Queue(PLY2PCD_QUEUE_NAME);
+    Queue queue() {
+        return new Queue(QUEUE_NAME);
     }
 
     @Bean
-    Queue pcdOutlierQueue() {
-        return new Queue(PCDOUTLIER_QUEUE_NAME);
-    }
-
-    @Bean
-    Binding ply2pcdBinding(TopicExchange exchange) {
-        return BindingBuilder.bind(ply2pcdQueue()).to(exchange).with(PLY2PCD_QUEUE_NAME);
-    }
-
-    @Bean
-    Binding pcdOutlierBinding(TopicExchange exchange) {
-        return BindingBuilder.bind(pcdOutlierQueue()).to(exchange).with(PCDOUTLIER_QUEUE_NAME);
+    List<Binding> bindings(Queue queue, TopicExchange exchange) {
+        return Arrays.asList(
+                BindingBuilder.bind(queue).to(exchange).with(KEY_PLY2PCD),
+                BindingBuilder.bind(queue).to(exchange).with(KEY_INLIER)
+        );
     }
 
     @Bean
