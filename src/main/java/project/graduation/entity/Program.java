@@ -1,6 +1,8 @@
 package project.graduation.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
@@ -9,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import project.graduation.dto.ProgramDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -31,18 +34,26 @@ public class Program {
     @Column(name = "PRIORITY")
     private Integer priority;
     @NotNull
-    @Column(name = "TYPE")
-    private String type;
+    @Column(name = "ROUTING_KEY")
+    private String routingKey;
     @Column(name = "COMMAND_PATH")
     private String commandPath;
+    @Column(name = "DIR")
+    private String dir;
     @Column(name = "ARGUMENTS")
     private String arguments;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
-
     @LastModifiedDate
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    public Program(ProgramDto programDto) {
+        this.priority = programDto.getPriority();
+        this.routingKey = programDto.getRoutingKey();
+        this.commandPath = programDto.getCommandPath();
+        this.dir = programDto.getDir();
+        this.arguments = programDto.getArguments();
+    }
 }

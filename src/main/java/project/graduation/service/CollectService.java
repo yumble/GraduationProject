@@ -1,27 +1,33 @@
 package project.graduation.service;
 
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import project.graduation.dto.*;
 import project.graduation.entity.*;
 import project.graduation.repository.CollectRepository;
-
 import java.util.UUID;
+
+import static project.graduation.controller.RabbitMQConfig.*;
 
 @Transactional(readOnly = true)
 @Slf4j
 @Service
 @AllArgsConstructor
 public class CollectService {
+    @Autowired
+    private final RabbitTemplate rabbitTemplate;
     private final CollectRepository collectRepository;
-
     private final GeneralFileService generalFileService;
     private final FloorService floorService;
 
@@ -29,11 +35,8 @@ public class CollectService {
     public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, MultipartFile file) {
 
         GeneralFile savedFile = generalFileService.saveFile("lidar", file);
-
         Floor floor = floorService.saveFloor(addressDto, location.getFloor());
-
         GPS gps = new GPS(location);
-
         Collect collect = Collect.builder()
                 .generalFile(savedFile)
                 .gps(gps)
@@ -41,7 +44,7 @@ public class CollectService {
                 .build();
 
         collect = collectRepository.save(collect);
-
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, KEY_PLY2PCD, new MQDto(KEY_PLY2PCD, savedFile.getFileId().toString()));
         return new CollectDto(collect);
     }
 

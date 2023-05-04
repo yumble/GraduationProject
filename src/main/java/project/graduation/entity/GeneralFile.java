@@ -59,4 +59,10 @@ public class GeneralFile {
     @Column(name = "LAST_MODIFIED_DATE")
     private LocalDateTime lastModifiedDate;
 
+    public void modifyByProcess(String ext, String uploadDir) {
+        this.originFileName = originFileName.replaceFirst("\\.\\w+$", "." + ext);
+        this.savedFileName = savedFileName.replaceFirst("\\.\\w+$", "." + ext);
+        this.ext = ext;
+        this.uploadDir = uploadDir;
+    }
 }

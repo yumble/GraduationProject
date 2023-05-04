@@ -27,9 +27,7 @@ import static project.graduation.config.resultform.ResultResponseStatus.NOT_FOUN
 public class GeneralFileService {
 
     private final GeneralFileRepository generalFileRepository;
-
     private final Environment env;
-
     private String STORAGE_ROOT_DIR;
 
     public GeneralFileService(GeneralFileRepository generalFileRepository,

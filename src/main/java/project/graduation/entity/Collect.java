@@ -55,7 +55,6 @@ public class Collect {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-
     public Collect(GeneralFile generalFile, GPS gps, Floor floor) {
         this.generalFile = generalFile;
         this.gps = gps;
@@ -63,5 +62,10 @@ public class Collect {
         //this.ipV4 = ipV4;
         //this.ipV6 = ipV6;
         //this.program = program;
+    }
+
+    public void modifyByProgram(Program program){
+        this.program = program;
+        this.generalFile.modifyByProcess(program.getArguments(), program.getRoutingKey());
     }
 }
