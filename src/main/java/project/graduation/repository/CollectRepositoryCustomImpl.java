@@ -1,5 +1,6 @@
 package project.graduation.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -41,7 +42,7 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(floor1.address.addressId.eq(addressId))
+                .where(addressIdEq(addressId))
                 .orderBy(collect.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -54,7 +55,7 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(floor1.address.addressId.eq(addressId))
+                .where(addressIdEq(addressId))
                 .fetch().size();
 
         return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
@@ -78,5 +79,8 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchOne();
 
         return new CollectDetailDto(content);
+    }
+    private BooleanExpression addressIdEq(String addressId) {
+        return addressId== null || addressId.equals(":") ? null : floor1.address.addressId.eq(addressId);
     }
 }
