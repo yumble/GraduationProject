@@ -37,10 +37,11 @@ public class CollectController {
         return new ResultResponse<>(collectService.uploadLidarFile(address, location, file), null);
     }
 
-    @GetMapping("/{addressId}")
-    public ResultResponse<List<CollectListDto>> getLidarFiles(@PathVariable String addressId,
-                                                              @RequestParam(defaultValue = "1") Integer page,
-                                                              @RequestParam(defaultValue = "10") Integer size) {
+    @GetMapping({"","/{addressId}"})
+    public ResultResponse<List<CollectListDto>> getLidarFiles(@PathVariable(required = false) String addressId,
+                                                              @RequestParam(required = false, defaultValue = "1") Integer page,
+                                                              @RequestParam(required = false, defaultValue = "10") Integer size) {
+        System.out.println("addressId = " + addressId);
         Page<CollectListDto> collectList = collectService.getLidarFiles(addressId, page, size);
         return new ResultResponse<>(null, collectList.getContent(),
                 Map.of("totalCount", collectList.getTotalElements(),
