@@ -6,13 +6,15 @@ import project.graduation.entity.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static project.graduation.controller.RabbitMQConfig.KEY_COMPLETE;
+
 @Data
 public class CollectListDto {
 
     private String collectId;
     private String generalFileId;
     private Long fileSize;
-    private String programStatus;
+    private Boolean isProgramCompleted = false;
     private String gpsId;
     private String addressId;
     private String addressName;
@@ -29,8 +31,9 @@ public class CollectListDto {
         this.generalFileId = String.valueOf(collect.getGeneralFile().getFileId());
         this.fileSize = collect.getGeneralFile().getSize();
 
-        if(collect.getProgram() != null)
-            this.programStatus = collect.getProgram().getRoutingKey();
+        if(collect.getProgram() != null && collect.getProgram().getRoutingKey().equals(KEY_COMPLETE)) {
+            this.isProgramCompleted = true;
+        }
 
         this.gpsId = String.valueOf(collect.getGps().getGpsId());
 
