@@ -44,27 +44,29 @@ public class ProgramService {
     @Transactional
     public void excuteProcess(String routingKey, String fileId) throws InterruptedException {
         Program program = programRepository.findByRoutingKey(routingKey);
-        Thread thread = new Thread(() -> {
-            try {
-                ProcessBuilder builder = new ProcessBuilder(program.getCommandPath(), fileId);
-                builder.redirectErrorStream(true);
-                builder.directory(new File(program.getDir()));
-                Process process = builder.start();
+        if (!routingKey.equals(KEY_COMPLETE)) {
+            Thread thread = new Thread(() -> {
+                try {
+                    ProcessBuilder builder = new ProcessBuilder(program.getCommandPath(), fileId);
+                    builder.redirectErrorStream(true);
+                    builder.directory(new File(program.getDir()));
+                    Process process = builder.start();
 
-                //프로세스의 출력을 읽는 코드
-                //printProcess(process);
-                // 프로세스의 종료를 기다리는 코드
-                waitProcess(process);
-            } catch (Exception e) {
-                throw new ResultException(UPLOAD_ERROR);
-            }
-        });
-        thread.start();
-        thread.join();
+                    //프로세스의 출력을 읽는 코드
+                    //printProcess(process);
+                    // 프로세스의 종료를 기다리는 코드
+                    waitProcess(process);
+                } catch (Exception e) {
+                    throw new ResultException(UPLOAD_ERROR);
+                }
+            });
 
-        if(program.getRoutingKey().equals(KEY_INLIER)) {
+            thread.start();
+            thread.join();
+        }
+        else {
             Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
-            optionalCollect.ifPresent(collect->collect.modifyByProgram(program));
+            optionalCollect.ifPresent(collect -> collect.modifyByProgram(program));
         }
         sendMessage(program.getPriority(), fileId);
     }
@@ -81,12 +83,14 @@ public class ProgramService {
             System.out.println(line);
         }
     }
+
     private void waitProcess(Process process) throws InterruptedException {
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new ResultException(UPLOAD_ERROR);
         }
     }
+
     public void sendMessage(Integer priority, String fileId) {
         Optional<Program> nextProgram = programRepository.findByPriority(priority + 1);
         nextProgram.ifPresent(value

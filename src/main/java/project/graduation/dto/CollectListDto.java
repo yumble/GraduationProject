@@ -12,14 +12,12 @@ public class CollectListDto {
     private String collectId;
     private String generalFileId;
     private Long fileSize;
-    private String programId;
+    private String programStatus;
     private String gpsId;
     private String addressId;
     private String addressName;
     private String roadAddressName;
     private String placeName;
-
-    private String floorId;
     private Integer floor;
 
     private String createdDate;
@@ -32,7 +30,7 @@ public class CollectListDto {
         this.fileSize = collect.getGeneralFile().getSize();
 
         if(collect.getProgram() != null)
-            this.programId = String.valueOf(collect.getProgram().getProgramId());
+            this.programStatus = collect.getProgram().getRoutingKey();
 
         this.gpsId = String.valueOf(collect.getGps().getGpsId());
 
@@ -41,7 +39,6 @@ public class CollectListDto {
         this.roadAddressName = collect.getFloor().getAddress().getRoadAddressName();
         this.placeName = collect.getFloor().getAddress().getPlaceName();
 
-        this.floorId = String.valueOf(collect.getFloor().getFloorId());
         this.floor = collect.getFloor().getFloor();
 
         this.createdDate = convertToString(collect.getCreatedDate());
