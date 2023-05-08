@@ -60,6 +60,9 @@ public class GeneralFileService {
 
         return targetFile;
     }
+    public String getFilePathStr(GeneralFile generalFile){
+        return String.valueOf(Paths.get(STORAGE_ROOT_DIR, DOWNLOAD_DIR, generalFile.getSavedFileName()));
+    }
 
     @Transactional
     public GeneralFile saveFile(String uploadDir, MultipartFile file) {

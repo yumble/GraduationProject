@@ -30,6 +30,7 @@ public class ProgramService {
     private RabbitTemplate rabbitTemplate;
     private final ProgramRepository programRepository;
     private final CollectRepository collectRepository;
+    private final GeneralFileService generalFileService;
 
     @Transactional
     @RabbitListener(queues = QUEUE_NAME)
@@ -66,7 +67,16 @@ public class ProgramService {
         }
 
         Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
-        optionalCollect.ifPresent(collect -> collect.modifyByProgram(program));
+        optionalCollect.ifPresent(collect -> {
+            collect.modifyByProgram(program);
+            if(routingKey.equals(KEY_COMPLETE)) {
+                Long totalPoints = updateTotalPoints(collect.getGeneralFile());
+                if(totalPoints!=null){
+                    collect.updateTotalPoints(totalPoints);
+                }
+
+            }
+        });
 
         sendMessage(program.getPriority(), fileId);
     }
@@ -95,5 +105,21 @@ public class ProgramService {
         Optional<Program> nextProgram = programRepository.findByPriority(priority + 1);
         nextProgram.ifPresent(value
                 -> rabbitTemplate.convertAndSend(EXCHANGE_NAME, value.getRoutingKey(), new MQDto(value.getRoutingKey(), fileId)));
+    }
+    public Long updateTotalPoints(GeneralFile generalFile) {
+        Long totalPoints = null;
+        String filePathStr = generalFileService.getFilePathStr(generalFile);
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathStr))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("POINTS")) {
+                    totalPoints = Long.parseLong(line.split(" ")[1]);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return totalPoints;
     }
 }

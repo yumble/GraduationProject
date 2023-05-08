@@ -71,4 +71,7 @@ public class Collect {
         this.program = program;
         this.generalFile.modifyByProcess(program.getExt(), program.getRoutingKey());
     }
+    public void updateTotalPoints(Long totalPoints){
+        this.totalPoints = totalPoints;
+    }
 }

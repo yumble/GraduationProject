@@ -28,7 +28,7 @@ public class CollectController {
     @PostMapping
     public ResultResponse<CollectDto> uploadLidarFile(@RequestPart @Valid AddressDto address,
                                                       @RequestPart @Valid GPSDto location,
-                                                      @RequestPart @Valid Long totalPoints,
+                                                      @RequestParam @Valid Long totalPoints,
                                                       @RequestPart MultipartFile file,
                                                       BindingResult br) {
         if (br.hasErrors() || file.isEmpty()) {
