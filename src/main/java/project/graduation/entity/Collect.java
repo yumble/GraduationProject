@@ -31,6 +31,8 @@ public class Collect {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "FILE_ID")
     private GeneralFile generalFile;
+    @Column(name = "TOTALPOINTS")
+    private Long totalPoints;
     @Column(name = "IP_V4")
     private String ipV4;
     @Column(name = "IP_V6")
@@ -55,10 +57,11 @@ public class Collect {
     private LocalDateTime lastModifiedDate;
 
     @Builder
-    public Collect(GeneralFile generalFile, GPS gps, Floor floor) {
+    public Collect(GeneralFile generalFile, GPS gps, Floor floor, Long totalPoints) {
         this.generalFile = generalFile;
         this.gps = gps;
         this.floor = floor;
+        this.totalPoints = totalPoints;
         //this.ipV4 = ipV4;
         //this.ipV6 = ipV6;
         //this.program = program;

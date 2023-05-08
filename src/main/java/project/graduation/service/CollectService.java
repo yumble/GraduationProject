@@ -32,7 +32,7 @@ public class CollectService {
     private final FloorService floorService;
 
     @Transactional
-    public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, MultipartFile file) {
+    public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, Long totalPoints, MultipartFile file) {
 
         GeneralFile savedFile = generalFileService.saveFile("lidar", file);
         Floor floor = floorService.saveFloor(addressDto, location.getFloor());
@@ -41,6 +41,7 @@ public class CollectService {
                 .generalFile(savedFile)
                 .gps(gps)
                 .floor(floor)
+                .totalPoints(totalPoints)
                 .build();
 
         collect = collectRepository.save(collect);

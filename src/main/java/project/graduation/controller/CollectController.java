@@ -28,13 +28,14 @@ public class CollectController {
     @PostMapping
     public ResultResponse<CollectDto> uploadLidarFile(@RequestPart @Valid AddressDto address,
                                                       @RequestPart @Valid GPSDto location,
+                                                      @RequestPart @Valid Long totalPoints,
                                                       @RequestPart MultipartFile file,
                                                       BindingResult br) {
         if (br.hasErrors() || file.isEmpty()) {
             throw new ResultException(REQUEST_ERROR);
         }
 
-        return new ResultResponse<>(collectService.uploadLidarFile(address, location, file), null);
+        return new ResultResponse<>(collectService.uploadLidarFile(address, location, totalPoints, file), null);
     }
 
     @GetMapping({"","/{addressId}"})
