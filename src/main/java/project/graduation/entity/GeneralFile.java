@@ -12,6 +12,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static project.graduation.controller.RabbitMQConfig.KEY_COMPLETE;
+
 @Entity
 @Getter
 @Builder
@@ -63,6 +65,7 @@ public class GeneralFile {
         this.originFileName = originFileName.replaceFirst("\\.\\w+$", "." + ext);
         this.savedFileName = savedFileName.replaceFirst("\\.\\w+$", "." + ext);
         this.ext = ext;
-        this.uploadDir = uploadDir;
+        if(!uploadDir.equals(KEY_COMPLETE))
+            this.uploadDir = uploadDir;
     }
 }

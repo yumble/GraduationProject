@@ -40,8 +40,8 @@ public class Program {
     private String commandPath;
     @Column(name = "DIR")
     private String dir;
-    @Column(name = "ARGUMENTS")
-    private String arguments;
+    @Column(name = "EXT")
+    private String ext;
     @CreatedDate
     @Column(name = "CREATED_DATE", columnDefinition = "timestamp default CURRENT_TIMESTAMP not null")
     private LocalDateTime createdDate;
@@ -54,6 +54,6 @@ public class Program {
         this.routingKey = programDto.getRoutingKey();
         this.commandPath = programDto.getCommandPath();
         this.dir = programDto.getDir();
-        this.arguments = programDto.getArguments();
+        this.ext = programDto.getExt();
     }
 }

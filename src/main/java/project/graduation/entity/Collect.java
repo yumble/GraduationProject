@@ -36,7 +36,7 @@ public class Collect {
     @Column(name = "IP_V6")
     private String ipV6;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "STAT", referencedColumnName = "PROGRAM_ID")
     private Program program;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -66,6 +66,6 @@ public class Collect {
 
     public void modifyByProgram(Program program){
         this.program = program;
-        this.generalFile.modifyByProcess(program.getArguments(), program.getRoutingKey());
+        this.generalFile.modifyByProcess(program.getExt(), program.getRoutingKey());
     }
 }

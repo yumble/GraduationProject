@@ -64,10 +64,10 @@ public class ProgramService {
             thread.start();
             thread.join();
         }
-        else {
-            Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
-            optionalCollect.ifPresent(collect -> collect.modifyByProgram(program));
-        }
+
+        Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
+        optionalCollect.ifPresent(collect -> collect.modifyByProgram(program));
+
         sendMessage(program.getPriority(), fileId);
     }
 
