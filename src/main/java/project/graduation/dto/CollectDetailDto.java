@@ -16,6 +16,9 @@ public class CollectDetailDto {
     private Long fileSize;
     private String programId;
     private String gpsId;
+    private String latitude;
+    private String longitude;
+    private String altitude;
     private String addressId;
     private String addressName;
     private String roadAddressName;
@@ -38,6 +41,9 @@ public class CollectDetailDto {
             this.programId = String.valueOf(collect.getProgram().getProgramId());
 
         this.gpsId = String.valueOf(collect.getGps().getGpsId());
+        this.latitude = collect.getGps().getLatitude();
+        this.longitude = collect.getGps().getLongitude();
+        this.altitude = collect.getGps().getAltitude();
 
         this.addressId = collect.getFloor().getAddress().getAddressId();
         this.addressName = collect.getFloor().getAddress().getAddressName();
