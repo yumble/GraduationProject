@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.graduation.config.resultform.ResultException;
@@ -32,6 +33,7 @@ public class ProgramService {
     private final CollectRepository collectRepository;
     private final GeneralFileService generalFileService;
 
+    @Async
     @Transactional
     @RabbitListener(queues = QUEUE_NAME)
     public void receiveMessage(Map<String, String> map) {
@@ -43,35 +45,33 @@ public class ProgramService {
     }
 
     @Transactional
+    @Async
     public void excuteProcess(String routingKey, String fileId) throws InterruptedException {
         Program program = programRepository.findByRoutingKey(routingKey);
         if (!routingKey.equals(KEY_COMPLETE)) {
-            Thread thread = new Thread(() -> {
-                try {
-                    ProcessBuilder builder = new ProcessBuilder(program.getCommandPath(), fileId);
-                    builder.redirectErrorStream(true);
-                    builder.directory(new File(program.getDir()));
-                    Process process = builder.start();
 
-                    //프로세스의 출력을 읽는 코드
-                    //printProcess(process);
-                    // 프로세스의 종료를 기다리는 코드
-                    waitProcess(process);
-                } catch (Exception e) {
-                    throw new ResultException(UPLOAD_ERROR);
-                }
-            });
+            try {
+                ProcessBuilder builder = new ProcessBuilder(program.getCommandPath(), fileId);
+                builder.redirectErrorStream(true);
+                builder.directory(new File(program.getDir()));
+                Process process = builder.start();
 
-            thread.start();
-            thread.join();
+                //프로세스의 출력을 읽는 코드
+                //printProcess(process);
+                // 프로세스의 종료를 기다리는 코드
+                waitProcess(process);
+            } catch (Exception e) {
+                throw new ResultException(UPLOAD_ERROR);
+            }
+
         }
 
         Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
         optionalCollect.ifPresent(collect -> {
             collect.modifyByProgram(program);
-            if(routingKey.equals(KEY_COMPLETE)) {
+            if (routingKey.equals(KEY_COMPLETE)) {
                 Long totalPoints = updateTotalPoints(collect.getGeneralFile());
-                if(totalPoints!=null){
+                if (totalPoints != null) {
                     collect.updateTotalPoints(totalPoints);
                 }
 
@@ -106,6 +106,7 @@ public class ProgramService {
         nextProgram.ifPresent(value
                 -> rabbitTemplate.convertAndSend(EXCHANGE_NAME, value.getRoutingKey(), new MQDto(value.getRoutingKey(), fileId)));
     }
+
     public Long updateTotalPoints(GeneralFile generalFile) {
         Long totalPoints = null;
         String filePathStr = generalFileService.getFilePathStr(generalFile);
