@@ -16,7 +16,9 @@ import project.graduation.config.resultform.ResultException;
 import project.graduation.config.resultform.ResultResponseStatus;
 import project.graduation.dto.*;
 import project.graduation.entity.*;
+import project.graduation.repository.AddressRepository;
 import project.graduation.repository.CollectRepository;
+import project.graduation.repository.FloorRepository;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -34,6 +36,8 @@ public class CollectService {
     private final CollectRepository collectRepository;
     private final GeneralFileService generalFileService;
     private final FloorService floorService;
+    private final FloorRepository floorRepository;
+    private final AddressRepository addressRepository;
 
     @Transactional
     public CollectDto uploadLidarFile(AddressDto addressDto, GPSDto location, Long totalPoints, MultipartFile file) {
@@ -69,12 +73,25 @@ public class CollectService {
         }
         Collect collect = optionalCollect.get();
 
-        collectRepository.delete(collect); //GPS 도 같이 삭제되는 지 확인
-        generalFileService.deleteFile(collect.getGeneralFile());
-
-        if(collectRepository.countByFloor(collect.getCollectId()) == 0) {
-            floorService.deleteFloor(collect.getFloor());
+        if(collectRepository.countByFloor(collect.getCollectId()) == 1) {
+            collectRepository.delete(collect); //GPS 도 같이 삭제되는 지 확인
+            generalFileService.deleteFile(collect.getGeneralFile());
+            Floor floor = collect.getFloor();
+            floorService.deleteFloor(floor);
+        }else {
+            collectRepository.delete(collect); //GPS 도 같이 삭제되는 지 확인
+            generalFileService.deleteFile(collect.getGeneralFile());
         }
 
+    }
+    @Transactional
+    public CollectDetailDto updateLidarFile(UUID collectId, RelationDataDto relationDataDto){
+        Optional<Collect> optionalCollect = collectRepository.findByCollect(collectId);
+        if(optionalCollect.isEmpty()) {
+            throw new ResultException(ResultResponseStatus.NOT_FOUND);
+        }
+        Collect collect = optionalCollect.get();
+        collect.updateRelationData(relationDataDto);
+        return new CollectDetailDto(collect);
     }
 }

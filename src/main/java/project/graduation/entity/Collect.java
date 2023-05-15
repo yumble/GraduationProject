@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import project.graduation.dto.RelationDataDto;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -33,10 +34,10 @@ public class Collect {
     private GeneralFile generalFile;
     @Column(name = "TOTALPOINTS")
     private Long totalPoints;
-    @Column(name = "IP_V4")
-    private String ipV4;
-    @Column(name = "IP_V6")
-    private String ipV6;
+    @Column(name = "ROTATION")
+    private String rotation;
+    @Column(name = "TRANSLATION")
+    private String translation;
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "STAT", referencedColumnName = "PROGRAM_ID")
@@ -73,5 +74,9 @@ public class Collect {
     }
     public void updateTotalPoints(Long totalPoints){
         this.totalPoints = totalPoints;
+    }
+    public void updateRelationData(RelationDataDto relationDataDto){
+        this.rotation = relationDataDto.getRotation();
+        this.translation = relationDataDto.getTranslation();
     }
 }

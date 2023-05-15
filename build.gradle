@@ -42,6 +42,9 @@ dependencies {
 	implementation 'commons-fileupload:commons-fileupload:1.4' //file upload
 	implementation 'org.springframework.boot:spring-boot-starter-validation' //validation
 	implementation 'org.springframework.boot:spring-boot-starter-amqp' //rabbitmq
+
+	implementation 'com.google.code.gson:gson:2.10'
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 }
 
 tasks.named('test') {

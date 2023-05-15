@@ -25,7 +25,7 @@ public interface CollectRepository extends JpaRepository<Collect, UUID>, Collect
             " where collect.collectId = :collectId")
     Optional<Collect> findByCollect(UUID collectId);
 
-    @Query(value = "SELECT count(c) FROM Collect c join c.floor f " +
+    @Query(value = "SELECT count(c.collectId) FROM Collect c join c.floor f " +
             " WHERE f.floorId = (select c1.floor.floorId from Collect c1 where c1.collectId = :collectId )")
     int countByFloor(UUID collectId);
 }

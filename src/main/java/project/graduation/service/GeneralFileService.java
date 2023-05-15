@@ -97,10 +97,11 @@ public class GeneralFileService {
         }
         return generalFileRepository.save(generalFile);
     }
+    @Transactional
     public void deleteFile(GeneralFile generalFile) throws IOException {
         Path filePath = Path.of(getFilePathStr(generalFile));
         Files.deleteIfExists(filePath);
-        generalFileRepository.delete(generalFile);
+        //generalFileRepository.delete(generalFile);
     }
 
 }

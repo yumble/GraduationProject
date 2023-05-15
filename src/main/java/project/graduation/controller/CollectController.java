@@ -60,4 +60,13 @@ public class CollectController {
         collectService.deleteLidarFile(collectId);
         return new ResultResponse<>(null, null);
     }
+    @PatchMapping("/{collectId}")
+    public ResultResponse<CollectDetailDto> updateLidarFile(@PathVariable UUID collectId,
+                                                            @RequestBody @Valid RelationDataDto relationDataDto,
+                                                            BindingResult br) throws IOException {
+        if (br.hasErrors()) {
+            throw new ResultException(REQUEST_ERROR);
+        }
+        return new ResultResponse<>(collectService.updateLidarFile(collectId, relationDataDto), null);
+    }
 }
