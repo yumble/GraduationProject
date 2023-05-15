@@ -8,14 +8,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import project.graduation.config.resultform.ResultException;
+import project.graduation.config.resultform.ResultResponseStatus;
 import project.graduation.dto.*;
 import project.graduation.entity.*;
 import project.graduation.repository.CollectRepository;
+
+import java.io.IOException;
+import java.util.Optional;
 import java.util.UUID;
 
 import static project.graduation.controller.RabbitMQConfig.*;
@@ -25,7 +29,7 @@ import static project.graduation.controller.RabbitMQConfig.*;
 @Service
 @AllArgsConstructor
 public class CollectService {
-    @Autowired
+
     private final RabbitTemplate rabbitTemplate;
     private final CollectRepository collectRepository;
     private final GeneralFileService generalFileService;
@@ -55,5 +59,22 @@ public class CollectService {
     }
     public CollectDetailDto getLidarFile(UUID collectId){
         return collectRepository.findByCollectId(collectId);
+    }
+    @Transactional
+    public void deleteLidarFile(UUID collectId) throws IOException {
+
+        Optional<Collect> optionalCollect = collectRepository.findByCollect(collectId);
+        if(optionalCollect.isEmpty()) {
+            throw new ResultException(ResultResponseStatus.NOT_FOUND);
+        }
+        Collect collect = optionalCollect.get();
+
+        collectRepository.delete(collect); //GPS 도 같이 삭제되는 지 확인
+        generalFileService.deleteFile(collect.getGeneralFile());
+
+        if(collectRepository.countByFloor(collect.getCollectId()) == 0) {
+            floorService.deleteFloor(collect.getFloor());
+        }
+
     }
 }

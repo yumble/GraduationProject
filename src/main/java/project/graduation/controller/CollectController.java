@@ -12,6 +12,7 @@ import project.graduation.config.resultform.ResultResponse;
 import project.graduation.dto.*;
 import project.graduation.service.CollectService;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -52,5 +53,11 @@ public class CollectController {
     @GetMapping("/{collectId}/detail")
     public ResultResponse<CollectDetailDto> getLidarFile(@PathVariable UUID collectId) {
         return new ResultResponse<>(collectService.getLidarFile(collectId), null);
+    }
+
+    @DeleteMapping("/{collectId}")
+    public ResultResponse<CollectDetailDto> deleteLidarFile(@PathVariable UUID collectId) throws IOException {
+        collectService.deleteLidarFile(collectId);
+        return new ResultResponse<>(null, null);
     }
 }

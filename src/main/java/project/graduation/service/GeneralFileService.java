@@ -97,13 +97,10 @@ public class GeneralFileService {
         }
         return generalFileRepository.save(generalFile);
     }
-//    public void deleteFile(UUID fileId) throws IOException {
-//
-//        Path filePath = getFilepathByFileId(fileId);
-//
-//        File file = new File(filePath.toString());
-//        if (file.exists()) {
-//            Files.delete(filePath);
-//        }
-//    }
+    public void deleteFile(GeneralFile generalFile) throws IOException {
+        Path filePath = Path.of(getFilePathStr(generalFile));
+        Files.deleteIfExists(filePath);
+        generalFileRepository.delete(generalFile);
+    }
+
 }
