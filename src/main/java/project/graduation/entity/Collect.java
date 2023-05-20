@@ -42,6 +42,9 @@ public class Collect {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "STAT", referencedColumnName = "PROGRAM_ID")
     private Program program;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "FILE_GROUP_ID")
+    private FileGroup fileGroup;
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
     @JoinColumn(name = "GPS_ID")
     private GPS gps;
@@ -68,15 +71,21 @@ public class Collect {
         //this.program = program;
     }
 
-    public void modifyByProgram(Program program){
+    public void modifyByProgram(Program program) {
         this.program = program;
         this.generalFile.modifyByProcess(program.getExt(), program.getRoutingKey());
     }
-    public void updateTotalPoints(Long totalPoints){
+
+    public void updateTotalPoints(Long totalPoints) {
         this.totalPoints = totalPoints;
     }
-    public void updateRelationData(RelationDataDto relationDataDto){
+
+    public void updateRelationData(RelationDataDto relationDataDto) {
         this.rotation = relationDataDto.getRotation();
         this.translation = relationDataDto.getTranslation();
+    }
+
+    public void mappingFileGroup(FileGroup fileGroup) {
+        this.fileGroup = fileGroup;
     }
 }

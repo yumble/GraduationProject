@@ -1,17 +1,13 @@
 package project.graduation.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import project.graduation.entity.Collect;
+
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static project.graduation.entity.QAddress.address;
-import static project.graduation.entity.QCollect.collect;
-import static project.graduation.entity.QFloor.floor1;
-import static project.graduation.entity.QGPS.gPS;
-import static project.graduation.entity.QGeneralFile.generalFile;
-import static project.graduation.entity.QProgram.program;
 
 public interface CollectRepository extends JpaRepository<Collect, UUID>, CollectRepositoryCustom {
     @Query(value = "select collect from Collect collect join fetch collect.generalFile where collect.generalFile.fileId = :fileId")
@@ -28,4 +24,15 @@ public interface CollectRepository extends JpaRepository<Collect, UUID>, Collect
     @Query(value = "SELECT count(c.collectId) FROM Collect c join c.floor f " +
             " WHERE f.floorId = (select c1.floor.floorId from Collect c1 where c1.collectId = :collectId )")
     int countByFloor(UUID collectId);
+
+    @Query(value = "select collect from Collect collect where collect.collectId in :collectIdList")
+    List<Collect> findAllByCollectId(List<UUID> collectIdList);
+
+    @Modifying
+    @Query(value = "update Collect collect set collect.fileGroup.fileGruopId =:fileGroupId where collect in :collectList ")
+    void updateFileGroupId(UUID fileGroupId, List<Collect> collectList);
+
+    @Modifying
+    @Query(value = "update Collect collect set collect.fileGroup.fileGruopId = null where collect in :collectList ")
+    void updateFileGroupIdToNull(List<Collect> collectList);
 }

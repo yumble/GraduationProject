@@ -21,7 +21,6 @@ import project.graduation.repository.CollectRepository;
 import project.graduation.repository.FloorRepository;
 
 import java.io.IOException;
-import java.util.Optional;
 import java.util.UUID;
 
 import static project.graduation.controller.RabbitMQConfig.*;
@@ -67,11 +66,8 @@ public class CollectService {
     @Transactional
     public void deleteLidarFile(UUID collectId) throws IOException {
 
-        Optional<Collect> optionalCollect = collectRepository.findByCollect(collectId);
-        if(optionalCollect.isEmpty()) {
-            throw new ResultException(ResultResponseStatus.NOT_FOUND);
-        }
-        Collect collect = optionalCollect.get();
+        Collect collect = collectRepository.findByCollect(collectId)
+                .orElseThrow(() -> new ResultException(ResultResponseStatus.NOT_FOUND));
 
         if(collectRepository.countByFloor(collect.getCollectId()) == 1) {
             collectRepository.delete(collect); //GPS 도 같이 삭제되는 지 확인
@@ -86,11 +82,8 @@ public class CollectService {
     }
     @Transactional
     public CollectDetailDto updateLidarFile(UUID collectId, RelationDataDto relationDataDto){
-        Optional<Collect> optionalCollect = collectRepository.findByCollect(collectId);
-        if(optionalCollect.isEmpty()) {
-            throw new ResultException(ResultResponseStatus.NOT_FOUND);
-        }
-        Collect collect = optionalCollect.get();
+        Collect collect = collectRepository.findByCollect(collectId)
+                .orElseThrow(() -> new ResultException(ResultResponseStatus.NOT_FOUND));
         collect.updateRelationData(relationDataDto);
         return new CollectDetailDto(collect);
     }

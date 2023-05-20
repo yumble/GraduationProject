@@ -28,8 +28,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
     public CollectRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
+
     @Override
-    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable){
+    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable) {
         List<Collect> content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -61,8 +62,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
 
         return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
     }
+
     @Override
-    public CollectDetailDto findByCollectId(UUID collectId){
+    public CollectDetailDto findByCollectId(UUID collectId) {
         Collect content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -81,8 +83,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
 
         return new CollectDetailDto(content);
     }
+
     private BooleanExpression addressIdEq(String addressId) {
-        return addressId== null || addressId.equals(":") ? null :
+        return addressId == null || addressId.equals(":") || addressId.equals(":addressId") ? null :
                 floor1.address.roadAddressName.eq(
                         JPAExpressions
                                 .select(address.roadAddressName)
