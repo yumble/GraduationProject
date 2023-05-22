@@ -6,20 +6,20 @@ import project.graduation.entity.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static project.graduation.controller.RabbitMQConfig.KEY_COMPLETE;
+
 @Data
 public class CollectListDto {
 
     private String collectId;
     private String generalFileId;
     private Long fileSize;
-    private String programId;
+    private Boolean isProgramCompleted = false;
     private String gpsId;
     private String addressId;
     private String addressName;
     private String roadAddressName;
     private String placeName;
-
-    private String floorId;
     private Integer floor;
 
     private String createdDate;
@@ -31,8 +31,9 @@ public class CollectListDto {
         this.generalFileId = String.valueOf(collect.getGeneralFile().getFileId());
         this.fileSize = collect.getGeneralFile().getSize();
 
-        if(collect.getProgram() != null)
-            this.programId = String.valueOf(collect.getProgram().getProgramId());
+        if(collect.getProgram() != null && collect.getProgram().getRoutingKey().equals(KEY_COMPLETE)) {
+            this.isProgramCompleted = true;
+        }
 
         this.gpsId = String.valueOf(collect.getGps().getGpsId());
 
@@ -41,7 +42,6 @@ public class CollectListDto {
         this.roadAddressName = collect.getFloor().getAddress().getRoadAddressName();
         this.placeName = collect.getFloor().getAddress().getPlaceName();
 
-        this.floorId = String.valueOf(collect.getFloor().getFloorId());
         this.floor = collect.getFloor().getFloor();
 
         this.createdDate = convertToString(collect.getCreatedDate());

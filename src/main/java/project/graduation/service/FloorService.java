@@ -34,4 +34,14 @@ public class FloorService {
                 });
     }
 
+    @Transactional
+    public void deleteFloor(Floor floor){
+        if( floorRepository.countByAddress(floor.getFloorId()) == 1) {
+            floorRepository.delete(floor);
+            addressRepository.delete(floor.getAddress());
+        }else {
+            floorRepository.delete(floor);
+        }
+    }
+
 }

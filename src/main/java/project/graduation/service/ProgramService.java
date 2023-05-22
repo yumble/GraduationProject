@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.graduation.config.resultform.ResultException;
@@ -30,7 +31,9 @@ public class ProgramService {
     private RabbitTemplate rabbitTemplate;
     private final ProgramRepository programRepository;
     private final CollectRepository collectRepository;
+    private final GeneralFileService generalFileService;
 
+    @Async
     @Transactional
     @RabbitListener(queues = QUEUE_NAME)
     public void receiveMessage(Map<String, String> map) {
@@ -42,9 +45,11 @@ public class ProgramService {
     }
 
     @Transactional
+    @Async
     public void excuteProcess(String routingKey, String fileId) throws InterruptedException {
         Program program = programRepository.findByRoutingKey(routingKey);
-        Thread thread = new Thread(() -> {
+        if (!routingKey.equals(KEY_COMPLETE)) {
+
             try {
                 ProcessBuilder builder = new ProcessBuilder(program.getCommandPath(), fileId);
                 builder.redirectErrorStream(true);
@@ -58,14 +63,21 @@ public class ProgramService {
             } catch (Exception e) {
                 throw new ResultException(UPLOAD_ERROR);
             }
-        });
-        thread.start();
-        thread.join();
 
-        if(program.getRoutingKey().equals(KEY_INLIER)) {
-            Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
-            optionalCollect.ifPresent(collect->collect.modifyByProgram(program));
         }
+
+        Optional<Collect> optionalCollect = collectRepository.findByFileId(UUID.fromString(fileId));
+        optionalCollect.ifPresent(collect -> {
+            collect.modifyByProgram(program);
+            if (routingKey.equals(KEY_COMPLETE)) {
+                Long totalPoints = updateTotalPoints(collect.getGeneralFile());
+                if (totalPoints != null) {
+                    collect.updateTotalPoints(totalPoints);
+                }
+
+            }
+        });
+
         sendMessage(program.getPriority(), fileId);
     }
 
@@ -81,15 +93,34 @@ public class ProgramService {
             System.out.println(line);
         }
     }
+
     private void waitProcess(Process process) throws InterruptedException {
         int exitCode = process.waitFor();
         if (exitCode != 0) {
             throw new ResultException(UPLOAD_ERROR);
         }
     }
+
     public void sendMessage(Integer priority, String fileId) {
         Optional<Program> nextProgram = programRepository.findByPriority(priority + 1);
         nextProgram.ifPresent(value
                 -> rabbitTemplate.convertAndSend(EXCHANGE_NAME, value.getRoutingKey(), new MQDto(value.getRoutingKey(), fileId)));
+    }
+
+    public Long updateTotalPoints(GeneralFile generalFile) {
+        Long totalPoints = null;
+        String filePathStr = generalFileService.getFilePathStr(generalFile);
+        try (BufferedReader br = new BufferedReader(new FileReader(filePathStr))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.startsWith("POINTS")) {
+                    totalPoints = Long.parseLong(line.split(" ")[1]);
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return totalPoints;
     }
 }

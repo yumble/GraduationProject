@@ -21,6 +21,7 @@ public class RabbitMQConfig {
     public static final String QUEUE_NAME = "typers-filter-queue";
     public static final String KEY_PLY2PCD = "ply2pcd";
     public static final String KEY_INLIER = "inlier";
+    public static final String KEY_COMPLETE = "complete";
 
     @Bean
     TopicExchange exchange() {
@@ -35,7 +36,8 @@ public class RabbitMQConfig {
     List<Binding> bindings(Queue queue, TopicExchange exchange) {
         return Arrays.asList(
                 BindingBuilder.bind(queue).to(exchange).with(KEY_PLY2PCD),
-                BindingBuilder.bind(queue).to(exchange).with(KEY_INLIER)
+                BindingBuilder.bind(queue).to(exchange).with(KEY_INLIER),
+                BindingBuilder.bind(queue).to(exchange).with(KEY_COMPLETE)
         );
     }
 

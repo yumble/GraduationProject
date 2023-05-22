@@ -60,6 +60,9 @@ public class GeneralFileService {
 
         return targetFile;
     }
+    public String getFilePathStr(GeneralFile generalFile){
+        return String.valueOf(Paths.get(STORAGE_ROOT_DIR, DOWNLOAD_DIR, generalFile.getSavedFileName()));
+    }
 
     @Transactional
     public GeneralFile saveFile(String uploadDir, MultipartFile file) {
@@ -94,13 +97,11 @@ public class GeneralFileService {
         }
         return generalFileRepository.save(generalFile);
     }
-//    public void deleteFile(UUID fileId) throws IOException {
-//
-//        Path filePath = getFilepathByFileId(fileId);
-//
-//        File file = new File(filePath.toString());
-//        if (file.exists()) {
-//            Files.delete(filePath);
-//        }
-//    }
+    @Transactional
+    public void deleteFile(GeneralFile generalFile) throws IOException {
+        Path filePath = Path.of(getFilePathStr(generalFile));
+        Files.deleteIfExists(filePath);
+        //generalFileRepository.delete(generalFile);
+    }
+
 }

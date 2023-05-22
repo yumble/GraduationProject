@@ -23,6 +23,7 @@ public enum ResultResponseStatus {
     NOT_FOUND(false, 404, "Not Found"),
     METHOD_NOT_ALLOWED(false, 405,"Method Not Allowed"),
     NOT_ACCEPTABLE(false, 406, "Not Acceptable"),
+    EXIST_GROUP(false, 407, "이미 그룹이 존재합니다."),
 
 
     /**

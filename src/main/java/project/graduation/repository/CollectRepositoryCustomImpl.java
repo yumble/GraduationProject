@@ -1,6 +1,7 @@
 package project.graduation.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
     public CollectRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
+
     @Override
-    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable){
+    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable) {
         List<Collect> content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -60,8 +62,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
 
         return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
     }
+
     @Override
-    public CollectDetailDto findByCollectId(UUID collectId){
+    public CollectDetailDto findByCollectId(UUID collectId) {
         Collect content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -80,7 +83,15 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
 
         return new CollectDetailDto(content);
     }
+
     private BooleanExpression addressIdEq(String addressId) {
-        return addressId== null || addressId.equals(":") ? null : floor1.address.addressId.eq(addressId);
+        return addressId == null || addressId.equals(":") || addressId.equals(":addressId") ? null :
+                floor1.address.roadAddressName.eq(
+                        JPAExpressions
+                                .select(address.roadAddressName)
+                                .from(address)
+                                .where(address.addressId.eq(addressId)));
+        //where a1_0.ROAD_ADDRESS_NAME = (select ROAD_ADDRESS_NAME from TB_ADDRESS_INFO where TB_ADDRESS_INFO.ADDRESS_ID = :addressId)
+        //return addressId== null || addressId.equals(":") ? null : floor1.address.addressId.eq(addressId);
     }
 }

@@ -18,5 +18,5 @@ public class ProgramDto {
     private String routingKey;
     private String commandPath;
     private String dir;
-    private String arguments;
+    private String ext;
 }

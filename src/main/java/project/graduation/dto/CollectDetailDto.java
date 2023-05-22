@@ -14,8 +14,13 @@ public class CollectDetailDto {
     private String originFileName;
     private Long totalPoints;
     private Long fileSize;
+    private String rotation;
+    private String translation;
     private String programId;
     private String gpsId;
+    private String latitude;
+    private String longitude;
+    private String altitude;
     private String addressId;
     private String addressName;
     private String roadAddressName;
@@ -31,13 +36,20 @@ public class CollectDetailDto {
         this.collectId = String.valueOf(collect.getCollectId());
 
         this.generalFileId = String.valueOf(collect.getGeneralFile().getFileId());
-        this.fileSize = collect.getGeneralFile().getSize();
         this.originFileName = collect.getGeneralFile().getOriginFileName();
+        this.totalPoints = collect.getTotalPoints();
+        this.fileSize = collect.getGeneralFile().getSize();
+
+        this.rotation = collect.getRotation();
+        this.translation = collect.getTranslation();
 
         if(collect.getProgram() != null)
             this.programId = String.valueOf(collect.getProgram().getProgramId());
 
         this.gpsId = String.valueOf(collect.getGps().getGpsId());
+        this.latitude = collect.getGps().getLatitude();
+        this.longitude = collect.getGps().getLongitude();
+        this.altitude = collect.getGps().getAltitude();
 
         this.addressId = collect.getFloor().getAddress().getAddressId();
         this.addressName = collect.getFloor().getAddress().getAddressName();
