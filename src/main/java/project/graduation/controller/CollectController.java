@@ -41,9 +41,10 @@ public class CollectController {
 
     @GetMapping({"","/{addressId}"})
     public ResultResponse<List<CollectListDto>> getLidarFiles(@PathVariable(required = false) String addressId,
+                                                              @RequestParam(required = false) Integer floor,
                                                               @RequestParam(required = false, defaultValue = "1") Integer page,
                                                               @RequestParam(required = false, defaultValue = "10") Integer size) {
-        Page<CollectListDto> collectList = collectService.getLidarFiles(addressId, page, size);
+        Page<CollectListDto> collectList = collectService.getLidarFiles(addressId, floor, page, size);
         return new ResultResponse<>(null, collectList.getContent(),
                 Map.of("totalCount", collectList.getTotalElements(),
                         "totalPage", collectList.getTotalPages()

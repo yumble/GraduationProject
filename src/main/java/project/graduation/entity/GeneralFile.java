@@ -68,4 +68,8 @@ public class GeneralFile {
         if(!uploadDir.equals(KEY_COMPLETE))
             this.uploadDir = uploadDir;
     }
+
+    public void updateFileSize(long size){
+        this.size = size;
+    }
 }

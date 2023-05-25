@@ -74,7 +74,7 @@ public class ProgramService {
                 if (totalPoints != null) {
                     collect.updateTotalPoints(totalPoints);
                 }
-
+                updateFileSize(collect.getGeneralFile());
             }
         });
 
@@ -122,5 +122,11 @@ public class ProgramService {
             e.printStackTrace();
         }
         return totalPoints;
+    }
+
+    public void updateFileSize(GeneralFile generalFile){
+        String filePathStr = generalFileService.getFilePathStr(generalFile);
+        File file = new File(filePathStr);
+        generalFile.updateFileSize(file.length());
     }
 }

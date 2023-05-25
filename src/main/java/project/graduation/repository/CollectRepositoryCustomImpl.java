@@ -30,7 +30,7 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
     }
 
     @Override
-    public Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable) {
+    public Page<CollectListDto> findAllByAddressId(String addressId, Integer floor, Pageable pageable) {
         List<Collect> content = queryFactory
                 .select(collect)
                 .from(collect)
@@ -44,7 +44,8 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(addressIdEq(addressId))
+                .where(addressIdEq(addressId)
+                        .and(searchFloor(floor)))
                 .orderBy(collect.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -57,7 +58,8 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(addressIdEq(addressId))
+                .where(addressIdEq(addressId)
+                        .and(searchFloor(floor)))
                 .fetch().size();
 
         return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);
@@ -93,5 +95,9 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                                 .where(address.addressId.eq(addressId)));
         //where a1_0.ROAD_ADDRESS_NAME = (select ROAD_ADDRESS_NAME from TB_ADDRESS_INFO where TB_ADDRESS_INFO.ADDRESS_ID = :addressId)
         //return addressId== null || addressId.equals(":") ? null : floor1.address.addressId.eq(addressId);
+    }
+    private BooleanExpression searchFloor(Integer floor) {
+        return floor == null ? null :
+                floor1.floor.eq(floor);
     }
 }

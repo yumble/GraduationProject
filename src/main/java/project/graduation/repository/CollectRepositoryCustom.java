@@ -8,6 +8,6 @@ import project.graduation.dto.CollectListDto;
 import java.util.UUID;
 
 public interface CollectRepositoryCustom {
-    Page<CollectListDto> findAllByAddressId(String addressId, Pageable pageable);
+    Page<CollectListDto> findAllByAddressId(String addressId, Integer floor, Pageable pageable);
     CollectDetailDto findByCollectId(UUID collectId);
 }

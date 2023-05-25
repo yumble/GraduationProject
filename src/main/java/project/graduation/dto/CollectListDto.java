@@ -13,6 +13,7 @@ public class CollectListDto {
 
     private String collectId;
     private String generalFileId;
+    private String orginFileName;
     private Long fileSize;
     private Boolean isProgramCompleted = false;
     private String gpsId;
@@ -29,6 +30,7 @@ public class CollectListDto {
         this.collectId = String.valueOf(collect.getCollectId());
 
         this.generalFileId = String.valueOf(collect.getGeneralFile().getFileId());
+        this.orginFileName = collect.getGeneralFile().getOriginFileName();
         this.fileSize = collect.getGeneralFile().getSize();
 
         if(collect.getProgram() != null && collect.getProgram().getRoutingKey().equals(KEY_COMPLETE)) {

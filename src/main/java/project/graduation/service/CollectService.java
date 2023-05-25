@@ -56,9 +56,9 @@ public class CollectService {
         return new CollectDto(collect);
     }
 
-    public Page<CollectListDto> getLidarFiles(String addressId, Integer page, Integer size){
+    public Page<CollectListDto> getLidarFiles(String addressId, Integer floor, Integer page, Integer size){
         PageRequest pageable = PageRequest.of(page-1, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-        return collectRepository.findAllByAddressId(addressId, pageable);
+        return collectRepository.findAllByAddressId(addressId, floor, pageable);
     }
     public CollectDetailDto getLidarFile(UUID collectId){
         return collectRepository.findByCollectId(collectId);
