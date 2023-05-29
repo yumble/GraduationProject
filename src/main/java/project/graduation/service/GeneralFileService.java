@@ -14,6 +14,9 @@ import project.graduation.repository.GeneralFileRepository;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -21,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static project.graduation.config.resultform.ResultResponseStatus.NOT_FOUND;
+import static project.graduation.config.resultform.ResultResponseStatus.UPLOAD_ERROR;
 
 @Slf4j
 @Service
@@ -60,7 +64,8 @@ public class GeneralFileService {
 
         return targetFile;
     }
-    public String getFilePathStr(GeneralFile generalFile){
+
+    public String getFilePathStr(GeneralFile generalFile) {
         return String.valueOf(Paths.get(STORAGE_ROOT_DIR, DOWNLOAD_DIR, generalFile.getSavedFileName()));
     }
 
@@ -69,6 +74,15 @@ public class GeneralFileService {
         String extension = FilenameUtils.getExtension(file.getOriginalFilename());
         UUID uuid = UUID.randomUUID();
         String savedFileName = String.format("%s.%s", uuid, extension);
+
+
+        System.out.println("file.getOriginalFilename() = " + file.getOriginalFilename());
+        try {
+            System.out.println("URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8.toString()); = "
+                    + URLEncoder.encode(file.getOriginalFilename(), StandardCharsets.UTF_8.toString()));
+        } catch (UnsupportedEncodingException e) {
+            throw new ResultException(UPLOAD_ERROR);
+        }
 
         GeneralFile generalFile = GeneralFile.builder()
                 .fileId(uuid)
@@ -97,6 +111,7 @@ public class GeneralFileService {
         }
         return generalFileRepository.save(generalFile);
     }
+
     @Transactional
     public void deleteFile(GeneralFile generalFile) throws IOException {
         Path filePath = Path.of(getFilePathStr(generalFile));

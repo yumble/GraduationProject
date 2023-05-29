@@ -44,6 +44,9 @@ public class CollectController {
                                                               @RequestParam(required = false) Integer floor,
                                                               @RequestParam(required = false, defaultValue = "1") Integer page,
                                                               @RequestParam(required = false, defaultValue = "10") Integer size) {
+        if( (addressId == null || addressId.equals(":") || addressId.equals(":addressId")) && floor != null ) {
+            throw new ResultException(REQUEST_ERROR);
+        }
         Page<CollectListDto> collectList = collectService.getLidarFiles(addressId, floor, page, size);
         return new ResultResponse<>(null, collectList.getContent(),
                 Map.of("totalCount", collectList.getTotalElements(),

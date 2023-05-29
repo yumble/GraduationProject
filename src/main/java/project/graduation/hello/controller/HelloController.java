@@ -1,5 +1,6 @@
 package project.graduation.hello.controller;
 
+import org.springframework.web.bind.annotation.PostMapping;
 import project.graduation.config.resultform.ResultException;
 import project.graduation.config.resultform.ResultResponse;
 import project.graduation.config.resultform.ResultResponseStatus;
@@ -70,5 +71,9 @@ public class HelloController {
 
         Map<String, Object> map = new LinkedHashMap<>();
         return new ResultResponse<>("aaa", null);
+    }
+    @PostMapping
+    public ResultResponse<String> postTest(){
+        return new ResultResponse<>("success", null);
     }
 }

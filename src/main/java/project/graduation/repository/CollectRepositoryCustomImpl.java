@@ -44,8 +44,8 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(addressIdEq(addressId)
-                        .and(searchFloor(floor)))
+                .where(addressIdEq(addressId),
+                        searchFloor(floor))
                 .orderBy(collect.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -58,8 +58,8 @@ public class CollectRepositoryCustomImpl implements CollectRepositoryCustom {
                 .fetchJoin()
                 .join(collect.floor.address, address)
                 .fetchJoin()
-                .where(addressIdEq(addressId)
-                        .and(searchFloor(floor)))
+                .where(addressIdEq(addressId),
+                        searchFloor(floor))
                 .fetch().size();
 
         return new PageImpl<>(content.stream().map(CollectListDto::new).collect(Collectors.toList()), pageable, total);

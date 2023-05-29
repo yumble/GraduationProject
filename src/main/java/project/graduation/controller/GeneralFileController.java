@@ -4,6 +4,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +19,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -29,8 +35,8 @@ public class GeneralFileController {
     private final GeneralFileService generalFileService;
 
     @GetMapping("/download/{fileId}")
-    public void downloadFile(HttpServletResponse res,
-                                @PathVariable(value = "fileId") String fileId) throws IOException {
+    public ResponseEntity<InputStreamResource> downloadFile(HttpServletResponse res,
+                                                            @PathVariable(value = "fileId") String fileId) throws IOException {
 
         UUID fileUUID = UUID.fromString(fileId);
         GeneralFile fileInfo = generalFileService.getGeneralFileByFileId(fileUUID);
@@ -40,13 +46,13 @@ public class GeneralFileController {
 
         res.setContentType(fileInfo.getContentType());
         res.setContentLength((int) file.length());
-        res.setHeader("Content-Disposition", "attachment;filename=\"" + fileInfo.getOriginFileName() + "\"");
-        // res 객체를 통해서 서버로부터 파일 다운로드
-        OutputStream os = res.getOutputStream();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", fileInfo.getContentType());
+        headers.setContentDispositionFormData("attachment", URLEncoder.encode(fileInfo.getOriginFileName(), StandardCharsets.UTF_8));
         // 파일 입력 객체 생성
         FileInputStream fis = new FileInputStream(file);
-        FileCopyUtils.copy(fis, os);
-        fis.close();
-        os.close();
+
+        return new ResponseEntity<>(new InputStreamResource(fis), headers, HttpStatus.OK);
     }
 }
