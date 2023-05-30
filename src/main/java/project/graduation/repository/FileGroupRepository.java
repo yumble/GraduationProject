@@ -12,6 +12,6 @@ public interface FileGroupRepository extends JpaRepository<FileGroup, UUID>, Fil
             " join fetch fileGroup.collectList " +
             " join fetch fileGroup.floor " +
             " join fetch fileGroup.floor.address " +
-            " where fileGroup.fileGruopId = :fileGroupId")
+            " where fileGroup.fileGroupId = :fileGroupId")
     Optional<FileGroup> findByFileGroupId(UUID fileGroupId);
 }

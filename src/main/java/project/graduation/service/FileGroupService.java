@@ -47,7 +47,7 @@ public class FileGroupService {
 
         fileGroup = fileGroupRepository.save(fileGroup);
 
-        collectRepository.updateFileGroupId(fileGroup.getFileGruopId(), collectList);
+        collectRepository.updateFileGroupId(fileGroup.getFileGroupId(), collectList);
 
         return new FileGroupDto(fileGroup);
     }
@@ -81,7 +81,7 @@ public class FileGroupService {
         isFileGroupIdNotNull(addedCollects);
 
         collectRepository.updateFileGroupIdToNull(deletedCollects);
-        collectRepository.updateFileGroupId(fileGroup.getFileGruopId(), addedCollects);
+        collectRepository.updateFileGroupId(fileGroup.getFileGroupId(), addedCollects);
 
         fileGroup.updateGroupList(fileGroupRequestDto.getGroupName(), floor, newGroupList);
         return new FileGroupDto(fileGroup);

@@ -29,10 +29,10 @@ public interface CollectRepository extends JpaRepository<Collect, UUID>, Collect
     List<Collect> findAllByCollectId(List<UUID> collectIdList);
 
     @Modifying
-    @Query(value = "update Collect collect set collect.fileGroup.fileGruopId =:fileGroupId where collect in :collectList ")
+    @Query(value = "update Collect collect set collect.fileGroup.fileGroupId =:fileGroupId where collect in :collectList ")
     void updateFileGroupId(UUID fileGroupId, List<Collect> collectList);
 
     @Modifying
-    @Query(value = "update Collect collect set collect.fileGroup.fileGruopId = null where collect in :collectList ")
+    @Query(value = "update Collect collect set collect.fileGroup.fileGrouFÏpId = null where collect in :collectList ")
     void updateFileGroupIdToNull(List<Collect> collectList);
 }

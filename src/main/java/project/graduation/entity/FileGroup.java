@@ -29,7 +29,7 @@ public class FileGroup {
     @NotNull
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "FILE_GROUP_ID")
-    private UUID fileGruopId;
+    private UUID fileGroupId;
     @Column(name = "GROUP_NAME")
     private String groupName;
     @Column(name = "RELATION_DATA")

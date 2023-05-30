@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 @Data
 public class FileGroupDto {
 
-    private UUID fileGruopId;
+    private UUID fileGroupId;
     private String groupName;
     private List<UUID> collectIdList;
     private UUID floorId;
 
     public FileGroupDto(FileGroup fileGroup) {
-        this.fileGruopId = fileGroup.getFileGruopId();
+        this.fileGroupId = fileGroup.getFileGroupId();
         this.groupName = fileGroup.getGroupName();
         this.collectIdList = fileGroup.getCollectList()
                 .stream()
