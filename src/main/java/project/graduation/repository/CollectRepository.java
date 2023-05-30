@@ -33,6 +33,6 @@ public interface CollectRepository extends JpaRepository<Collect, UUID>, Collect
     void updateFileGroupId(UUID fileGroupId, List<Collect> collectList);
 
     @Modifying
-    @Query(value = "update Collect collect set collect.fileGroup.fileGrouFÏpId = null where collect in :collectList ")
+    @Query(value = "update Collect collect set collect.fileGroup.fileGroupId = null where collect in :collectList ")
     void updateFileGroupIdToNull(List<Collect> collectList);
 }
